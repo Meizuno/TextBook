@@ -1,1 +1,18 @@
 // app global css in SCSS form
+@media (prefers-color-scheme: light) {
+    :root {
+      --bg-layout: #f6f8fa;
+      --text-layout: #1f2327;
+    }
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-layout: #25292e;
+      --text-layout: #f0f6fc;
+    }
+  }
+
+.layout {
+    background-color: var(--bg-layout);
+    color: var(--text-layout);
+}
