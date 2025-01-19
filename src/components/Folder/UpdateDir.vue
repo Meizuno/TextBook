@@ -73,7 +73,6 @@ onMounted(() => {
     path.value = '/' + path.value
     options.value = [ ".." ]
   }
-  console.log(path.value)
   options.value.push(...getFolders(path.value))
 })
 

@@ -81,6 +81,7 @@
 import { ref } from 'vue';
 import { useNodeStore } from 'src/stores/node';
 import { useTreeStore } from 'src/stores/tree';
+import { useNotifyStore } from 'src/stores/notify';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar'
@@ -89,8 +90,8 @@ import { type TreeNode } from 'src/interface';
 const q = useQuasar()
 const router = useRouter();
 const { setActiveNode, deleteNode } = useNodeStore()
-// const { removeDir } = useFolderStore()
 const { tree } = storeToRefs(useTreeStore())
+const { error } = useNotifyStore()
 
 const filter = ref('')
 
@@ -111,8 +112,8 @@ const confirmDeleteNode = (node: TreeNode) => {
     cancel: true,
     persistent: true,
   }).onOk(() => {
-    deleteNode(node).catch((error) => {
-      console.error('Error while deleting node:', error);
+    deleteNode(node).catch(() => {
+      error("Failed to delete")
     });
   });
 };

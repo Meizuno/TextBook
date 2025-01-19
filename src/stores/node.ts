@@ -68,8 +68,6 @@ export const useNodeStore = defineStore('node', () => {
     const traverse = (nodes: TreeNode[]) => {
       for (const node of nodes) {
         if (node.path.split('/').slice(0, -1).join('/') === path) {
-          console.log(node.label)
-          console.log(path)
           if (node.type === 'directory') result.push(node.label);
         }
         if (node.children) {

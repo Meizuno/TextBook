@@ -96,8 +96,7 @@ const onSubmit = async () => {
     success('Folder created')
     uniqueName.value = true
     await navigate('home')
-  } catch (e) {
-    console.error(e)
+  } catch  {
     error('Folder already exists')
     uniqueName.value = false
   }
