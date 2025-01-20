@@ -1,28 +1,113 @@
 <template>
   <q-page>
-    <create-file
-      v-if="action === 'create'"
-    ></create-file>
-    <update-file
-      v-else-if="action === 'update'"
-      :path="optionalPath"
-    ></update-file>
+    <q-form
+      @submit="onSubmit"
+      @reset="onReset"
+      class="q-gutter-md q-pa-lg"
+    >
+      <q-input
+        filled
+        clearable
+        type="text"
+        v-model="selectedNode.label"
+        label="Name"
+        :rules="[(val) => val && val.length > 0]"
+      />
+
+      <q-select
+        filled
+        :disable="options.length === 0"
+        label="Path"
+        v-model="selectedNode.path"
+        :options="options"
+        :display-value="`${selectedNode.path ? selectedNode.path : ''}`"
+        v-bind="{ hint: options.length === 0 ? 'Make sure if folder exists' : '' }"
+      />
+
+      <q-input
+        filled
+        autogrow
+        type="textarea"
+        v-model="selectedNode.content"
+        label="Text"
+        rows="3"
+      />
+
+      <div class="row justify-between">
+        <q-btn
+          color="secondary"
+          :disable="!selectedNode?.content"
+          round
+          size="12px"
+          icon="remove_red_eye"
+          @click="showPreview"
+        />
+        <div>
+          <q-btn label="Reset" type="reset" color="grey" class="q-ml-sm"/>
+          <q-btn label="Submit" type="submit" color="primary" class="q-ml-sm"/>
+        </div>
+      </div>
+    </q-form>
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import CreateFile from 'src/components/File/CreateFile.vue';
-import UpdateFile from 'src/components/File/UpdateFile.vue';
-import { useRoute } from 'vue-router';
+import { ref, onBeforeUnmount, onMounted } from 'vue';
+import { useNodeStore } from 'src/stores/node';
+import { useTreeStore } from 'src/stores/tree';
+import { useNavigation } from 'src/composables/useNavigation';
+import { useNode } from 'src/composables/useNode';
+import { useNotify } from 'src/composables/useNotify';
+import { storeToRefs } from 'pinia';
+import { useQuasar } from 'quasar'
+import { marked } from 'marked';
+import 'github-markdown-css/github-markdown.css';
 
-const route = useRoute();
+const q = useQuasar()
+const { selectedNode } = storeToRefs(useNodeStore());
+const { setSelectedNode, unselectNode } = useNodeStore()
+const savedSelectedNode = { ...selectedNode.value}
+const isCreated = ref(
+  selectedNode.value.label ? false : true
+);
+const options = ref<string[]>([])
 
-const optionalPath = ref(route.params.path as string || '')
-const action = ref('')
+const { success } = useNotify()
+const { setTree } = useTreeStore()
+const { navigate } = useNavigation()
+const { createNode, editNode, getFolders } = useNode()
 
-watch(() => route.params.action as string, (newValue) => {
-  action.value = newValue
-}, { immediate: true });
+onMounted(() => {
+  options.value = getFolders(selectedNode.value.path)
+})
+
+const onSubmit = async () => {
+  if (isCreated.value){
+    await createNode(selectedNode.value)
+    success('File created')
+  }
+  else {
+    await editNode(savedSelectedNode, selectedNode.value)
+    success('File updated')
+  }
+  await setTree()
+  await navigate('home')
+}
+
+const onReset = () => {
+  setSelectedNode(savedSelectedNode)
+}
+
+const showPreview = async () => {
+  q.dialog({
+    message: await marked(selectedNode.value.content),
+    html: true,
+    class: 'markdown-body',
+  })
+}
+
+onBeforeUnmount(() => {
+  unselectNode()
+})
 
 </script>

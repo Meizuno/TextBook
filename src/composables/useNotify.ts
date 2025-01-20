@@ -1,7 +1,6 @@
-import { defineStore } from "pinia";
 import { useQuasar } from 'quasar'
 
-export const useNotifyStore = defineStore('notify', () => {
+export function useNotify() {
   const q = useQuasar()
   
   const success = (msg: string) => {
@@ -40,4 +39,4 @@ export const useNotifyStore = defineStore('notify', () => {
     load,
     error,
   }
-})
+}

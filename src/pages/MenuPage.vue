@@ -18,9 +18,8 @@
       no-nodes-label="No files found"
       class="text-body1"
       :nodes="tree"
-      node-key="path"
+      node-key='key'
       :filter="filter"
-      :default-expand-all="false"
     >
       <template v-slot:header-folder="prop">
         <div class="row no-wrap justify-between full-width">
@@ -34,7 +33,7 @@
               dense
               color="primary"
               icon="edit"
-              @click="editFolder(prop.node.path)"
+              @click="editFolder(prop.node)"
             />
             <q-btn
               flat
@@ -61,7 +60,7 @@
               dense
               color="primary"
               icon="edit"
-              @click="editFile(prop.node.path)"
+              @click="editFile(prop.node)"
             />
             <q-btn
               flat
@@ -81,18 +80,18 @@
 import { ref } from 'vue';
 import { useNodeStore } from 'src/stores/node';
 import { useTreeStore } from 'src/stores/tree';
-import { useNotifyStore } from 'src/stores/notify';
+import { useNotify } from 'src/composables/useNotify';
 import { storeToRefs } from 'pinia';
-import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar'
 import { useNavigation } from 'src/composables/useNavigation';
+import { useNode } from 'src/composables/useNode';
 import { type TreeNode } from 'src/interface';
 
 const q = useQuasar()
-const router = useRouter();
-const { setActiveNode, deleteNode } = useNodeStore()
+const { setActiveNode, setSelectedNode } = useNodeStore()
+const { deleteNode } = useNode()
 const { tree } = storeToRefs(useTreeStore())
-const { error } = useNotifyStore()
+const { error } = useNotify()
 const { navigate } = useNavigation()
 
 const filter = ref('')
@@ -102,8 +101,9 @@ const chooseFile = async (node: TreeNode) => {
   await navigate('active')
 };
 
-const editFolder = async (path: string) => {
-  await router.push({ name: 'folder', params: { path: path, action: 'update' } })
+const editFolder = async (node: TreeNode) => {
+  setSelectedNode(node)
+  await navigate('folder')
 };
 
 
@@ -121,8 +121,9 @@ const confirmDeleteNode = (node: TreeNode) => {
 };
 
 
-const editFile = async (path: string) => {
-  await router.push({ name: 'file', params: { path: path, action: 'update' } })
+const editFile = async (node: TreeNode) => {
+  setSelectedNode(node)
+  await navigate('file')
 };
 
 </script>

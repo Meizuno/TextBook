@@ -57,14 +57,14 @@
 import { useQuasar } from 'quasar'
 import { useSettingsStore } from 'src/stores/settings';
 import { useNetworkStore } from 'src/stores/network';
-import { useNotifyStore } from 'src/stores/notify';
+import { useNotify } from 'src/composables/useNotify';
 import { storeToRefs } from 'pinia';
 import urlDocs from 'src/assets/url-docs.md?raw';
 import { marked } from 'marked';
 import 'github-markdown-css/github-markdown.css';
 
 const q = useQuasar()
-const { error } = useNotifyStore()
+const { error } = useNotify()
 const { storeUrl } = storeToRefs(useSettingsStore())
 const { setStoreUrl } = useSettingsStore()
 const { network } = storeToRefs(useNetworkStore())

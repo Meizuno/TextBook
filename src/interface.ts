@@ -1,4 +1,5 @@
 export interface TreeNode {
+  key: string
   label: string
   path: string
   type: string

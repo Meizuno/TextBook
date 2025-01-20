@@ -18,8 +18,8 @@
       <q-tabs no-caps v-model="activeTab" active-color="primary" indicator-color="transparent">
         <q-tab name="home" icon="home" @click="navigate('home')" />
         <q-tab name="active" icon="visibility" @click="navigate('active')" />
-        <q-tab name="file" icon="note_add" @click="navigate('file', { action: 'create' })" />
-        <q-tab name="folder" icon="create_new_folder" @click="navigate('folder', { action: 'create', path: '' })" />
+        <q-tab name="file" icon="note_add" @click="navigate('file')" />
+        <q-tab name="folder" icon="create_new_folder" @click="navigate('folder')" />
         <q-tab name="settings" icon="tune" @click="navigate('settings')"/>
       </q-tabs>
     </q-footer>

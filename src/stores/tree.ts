@@ -15,6 +15,7 @@ export const useTreeStore = defineStore('tree', () => {
   const extendNode = async (node: TreeNode): Promise<TreeNode> => {
     const isDir = node.type === 'directory';
     return {
+      key: node.path + node.label,
       path: node.path,
       content: node.content,
       children: node.children ? await Promise.all(node.children.map(extendNode)) : [],

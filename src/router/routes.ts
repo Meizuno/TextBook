@@ -11,17 +11,17 @@ const routes: RouteRecordRaw[] = [
         name: 'home'
       },
       {
-        path: '/active',
+        path: 'active',
         component: () => import('pages/SelectedPage.vue'),
         name: 'active'
       },
       {
-        path: 'file/:action/:path(.*)?',
+        path: 'file',
         component: () => import('pages/FilePage.vue'),
         name: 'file'
       },
       {
-        path: 'folder/:action/:path(.*)?',
+        path: 'folder',
         component: () => import('pages/FolderPage.vue'),
         name: 'folder'
       },
