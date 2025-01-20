@@ -85,6 +85,7 @@ import { useNotifyStore } from 'src/stores/notify';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar'
+import { useNavigation } from 'src/composables/useNavigation';
 import { type TreeNode } from 'src/interface';
 
 const q = useQuasar()
@@ -92,12 +93,13 @@ const router = useRouter();
 const { setActiveNode, deleteNode } = useNodeStore()
 const { tree } = storeToRefs(useTreeStore())
 const { error } = useNotifyStore()
+const { navigate } = useNavigation()
 
 const filter = ref('')
 
 const chooseFile = async (node: TreeNode) => {
   setActiveNode(node)
-  await router.push({ name: 'active' })
+  await navigate('active')
 };
 
 const editFolder = async (path: string) => {

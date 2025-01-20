@@ -27,16 +27,21 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useNavigation } from 'src/composables/useNavigation';
+import { useAnimationStore } from 'src/stores/animation';
+import { storeToRefs } from 'pinia';
 
 const route = useRoute();
-const activeTab = computed(() => {
-  return route.name as string;
+const activeTab = ref(route.name as string);
+
+watch(() => route.name, (newValue) => {
+  activeTab.value = newValue as string;
 });
 
-const { transitionName, navigate } = useNavigation();
+const { transitionName } = storeToRefs(useAnimationStore());
+const { navigate } = useNavigation();
 
 
 </script>
