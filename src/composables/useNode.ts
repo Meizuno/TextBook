@@ -48,12 +48,13 @@ export function useNode() {
     await setTree()
   }
 
-  const getFolders = (path: string) => {
+  const getFolders = (selectedNode: TreeNode) => {
     const result: string[] = []
     const traverse = (nodes: TreeNode[]) => {
       for (const node of nodes) {
-        if (node.path === path) {
-          if (node.type === 'directory') result.push(node.label)
+        if (node.path === selectedNode.path) {
+          if (node.type === 'directory' && node.label !== selectedNode.label)
+            result.push(node.label)
         }
         if (node.children) {
           traverse(node.children)
