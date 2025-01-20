@@ -1,6 +1,6 @@
-import { api } from "src/boot/axios";
-import { type TreeNode } from "src/interface";
-import { useTreeStore } from "src/stores/tree";
+import { api } from 'src/boot/axios'
+import { type TreeNode } from 'src/interface'
+import { useTreeStore } from 'src/stores/tree'
 
 export function useNode() {
   const { setTree } = useTreeStore()
@@ -32,7 +32,7 @@ export function useNode() {
       type: new_node.type,
       children: [],
     }
-    await api.put('/item', {old_item: reducedOldNode, new_item: reducedNewNode})
+    await api.put('/item', { old_item: reducedOldNode, new_item: reducedNewNode })
     await setTree()
   }
 
@@ -44,26 +44,26 @@ export function useNode() {
       type: node.type,
       children: [],
     }
-    await api.delete('/item', {data: reducedNode})
+    await api.delete('/item', { data: reducedNode })
     await setTree()
   }
 
   const getFolders = (path: string) => {
-    const result: string[] = [];
+    const result: string[] = []
     const traverse = (nodes: TreeNode[]) => {
       for (const node of nodes) {
         if (node.path === path) {
-          if (node.type === 'directory') result.push(node.label);
+          if (node.type === 'directory') result.push(node.label)
         }
         if (node.children) {
-          traverse(node.children);
+          traverse(node.children)
         }
       }
-    };
+    }
 
-    const { tree } = useTreeStore();
-    traverse(tree);
-    return result;
+    const { tree } = useTreeStore()
+    traverse(tree)
+    return result
   }
 
   return { createNode, editNode, deleteNode, getFolders }

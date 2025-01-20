@@ -1,10 +1,6 @@
 <template>
   <q-page>
-    <q-form
-      @submit="onSubmit"
-      @reset="onReset"
-      class="q-gutter-md q-pa-lg"
-    >
+    <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md q-pa-lg">
       <q-input
         filled
         clearable
@@ -43,8 +39,8 @@
           @click="showPreview"
         />
         <div>
-          <q-btn label="Reset" type="reset" color="grey" class="q-ml-sm"/>
-          <q-btn label="Submit" type="submit" color="primary" class="q-ml-sm"/>
+          <q-btn label="Reset" type="reset" color="grey" class="q-ml-sm" />
+          <q-btn label="Submit" type="submit" color="primary" class="q-ml-sm" />
         </div>
       </div>
     </q-form>
@@ -52,24 +48,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeUnmount, onMounted } from 'vue';
-import { useNodeStore } from 'src/stores/node';
-import { useTreeStore } from 'src/stores/tree';
-import { useNavigation } from 'src/composables/useNavigation';
-import { useNode } from 'src/composables/useNode';
-import { useNotify } from 'src/composables/useNotify';
-import { storeToRefs } from 'pinia';
+import { ref, onBeforeUnmount, onMounted } from 'vue'
+import { useNodeStore } from 'src/stores/node'
+import { useTreeStore } from 'src/stores/tree'
+import { useNavigation } from 'src/composables/useNavigation'
+import { useNode } from 'src/composables/useNode'
+import { useNotify } from 'src/composables/useNotify'
+import { storeToRefs } from 'pinia'
 import { useQuasar } from 'quasar'
-import { marked } from 'marked';
-import 'github-markdown-css/github-markdown.css';
+import { marked } from 'marked'
+import 'github-markdown-css/github-markdown.css'
 
 const q = useQuasar()
-const { selectedNode } = storeToRefs(useNodeStore());
+const { selectedNode } = storeToRefs(useNodeStore())
 const { setSelectedNode, unselectNode } = useNodeStore()
-const savedSelectedNode = { ...selectedNode.value}
-const isCreated = ref(
-  selectedNode.value.label ? false : true
-);
+const savedSelectedNode = { ...selectedNode.value }
+const isCreated = ref(selectedNode.value.label ? false : true)
 const options = ref<string[]>([])
 
 const { success } = useNotify()
@@ -82,11 +76,10 @@ onMounted(() => {
 })
 
 const onSubmit = async () => {
-  if (isCreated.value){
+  if (isCreated.value) {
     await createNode(selectedNode.value)
     success('File created')
-  }
-  else {
+  } else {
     await editNode(savedSelectedNode, selectedNode.value)
     success('File updated')
   }
@@ -109,5 +102,4 @@ const showPreview = async () => {
 onBeforeUnmount(() => {
   unselectNode()
 })
-
 </script>

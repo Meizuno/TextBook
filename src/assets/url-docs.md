@@ -1,21 +1,22 @@
 ### Server should have 2 endpoints
 
 - Download data
-    ```
-    GET /
-    ```
 
-    - with parameters **`null`**
-    - with response data **`UploadNode[]`**
+  ```
+  GET /
+  ```
+
+  - with parameters **`null`**
+  - with response data **`UploadNode[]`**
 
 - Upload data
 
-    ```
-    POST /files
-    ```
+  ```
+  POST /files
+  ```
 
-    - with body **`UploadNode[]`**
-    - with response data **`null`**
+  - with body **`UploadNode[]`**
+  - with response data **`null`**
 
 ### Schema
 

@@ -1,10 +1,6 @@
 <template>
   <q-page>
-    <q-form
-      @submit="onSubmit"
-      @reset="onReset"
-      class="q-gutter-md q-pa-lg"
-    >
+    <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md q-pa-lg">
       <q-input
         filled
         clearable
@@ -25,23 +21,23 @@
       />
 
       <div class="row justify-between">
-        <q-btn label="Reset" type="reset" color="grey" class="q-ml-sm"/>
-        <q-btn label="Submit" type="submit" color="primary" class="q-ml-sm"/>
+        <q-btn label="Reset" type="reset" color="grey" class="q-ml-sm" />
+        <q-btn label="Submit" type="submit" color="primary" class="q-ml-sm" />
       </div>
     </q-form>
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeUnmount, onMounted } from 'vue';
-import { useNodeStore } from 'src/stores/node';
-import { useTreeStore } from 'src/stores/tree';
-import { useNavigation } from 'src/composables/useNavigation';
-import { useNode } from 'src/composables/useNode';
-import { useNotify } from 'src/composables/useNotify';
-import { storeToRefs } from 'pinia';
+import { ref, onBeforeUnmount, onMounted } from 'vue'
+import { useNodeStore } from 'src/stores/node'
+import { useTreeStore } from 'src/stores/tree'
+import { useNavigation } from 'src/composables/useNavigation'
+import { useNode } from 'src/composables/useNode'
+import { useNotify } from 'src/composables/useNotify'
+import { storeToRefs } from 'pinia'
 
-const { selectedNode } = storeToRefs(useNodeStore());
+const { selectedNode } = storeToRefs(useNodeStore())
 const { setSelectedNode, unselectNode } = useNodeStore()
 const savedSelectedNode = { ...selectedNode.value }
 const isCreated = selectedNode.value.label ? false : true
@@ -58,20 +54,19 @@ onMounted(() => {
 
 const onSubmit = async () => {
   console.log(selectedNode.value)
-  if (isCreated){
+  if (isCreated) {
     await createNode({
       key: selectedNode.value.key,
       label: selectedNode.value.label,
       path: selectedNode.value.path,
-      type: "directory",
+      type: 'directory',
       content: '',
       children: [],
       header: '',
-      icon: ''
+      icon: '',
     })
     success('Folder created')
-  }
-  else {
+  } else {
     await editNode(savedSelectedNode, selectedNode.value)
     success('folder updated')
   }
@@ -86,5 +81,4 @@ const onReset = () => {
 onBeforeUnmount(() => {
   unselectNode()
 })
-
 </script>

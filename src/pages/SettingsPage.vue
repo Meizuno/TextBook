@@ -2,22 +2,32 @@
   <q-page class="q-px-md q-py-lg">
     <div class="q-mb-lg">
       <div class="px-2 text-grey-7">Advanced</div>
-      <q-btn 
-        class="w-full rounded-lg" 
-        :disable="!network.connected" 
+      <q-btn
+        class="w-full rounded-lg"
+        :disable="!network.connected"
         :color="$q.dark.isActive ? 'grey-9' : 'grey-1'"
         :text-color="$q.dark.isActive ? 'grey-1' : 'grey-9'"
-        padding="sm" 
-        no-caps 
+        padding="sm"
+        no-caps
         @click="addStoreUrl"
       >
         <div class="row items-center w-full">
           <div class="flex-1 row justify-start items-center">
             <div>Store URL</div>
-            <q-btn @click.stop="handleInnerClick" flat icon="help_outline" color="grey-7" round size="sm" />
+            <q-btn
+              @click.stop="handleInnerClick"
+              flat
+              icon="help_outline"
+              color="grey-7"
+              round
+              size="sm"
+            />
           </div>
 
-          <q-banner dense rounded class="flex-1 text-left p-1"
+          <q-banner
+            dense
+            rounded
+            class="flex-1 text-left p-1"
             :class="$q.dark.isActive ? 'bg-dark' : 'bg-grey-3'"
           >
             <div class="text-ellipsis overflow-x-hidden">
@@ -55,13 +65,13 @@
 
 <script setup lang="ts">
 import { useQuasar } from 'quasar'
-import { useSettingsStore } from 'src/stores/settings';
-import { useNetworkStore } from 'src/stores/network';
-import { useNotify } from 'src/composables/useNotify';
-import { storeToRefs } from 'pinia';
-import urlDocs from 'src/assets/url-docs.md?raw';
-import { marked } from 'marked';
-import 'github-markdown-css/github-markdown.css';
+import { useSettingsStore } from 'src/stores/settings'
+import { useNetworkStore } from 'src/stores/network'
+import { useNotify } from 'src/composables/useNotify'
+import { storeToRefs } from 'pinia'
+import urlDocs from 'src/assets/url-docs.md?raw'
+import { marked } from 'marked'
+import 'github-markdown-css/github-markdown.css'
 
 const q = useQuasar()
 const { error } = useNotify()
@@ -71,10 +81,10 @@ const { network } = storeToRefs(useNetworkStore())
 
 const isValidUrl = (url: string) => {
   try {
-    new URL(url);
-    return true;
+    new URL(url)
+    return true
   } catch {
-    return false;
+    return false
   }
 }
 
@@ -94,17 +104,15 @@ const addStoreUrl = () => {
     persistent: true,
     prompt: {
       model: '',
-      type: 'text'
+      type: 'text',
     },
-  }).onOk(data => {
+  }).onOk((data) => {
     if (!data) {
       setStoreUrl('')
-    }
-    else {
+    } else {
       if (!isValidUrl(data)) {
         error('Invalid URL!')
-      }
-      else {
+      } else {
         setStoreUrl(data)
       }
     }

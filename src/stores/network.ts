@@ -1,13 +1,12 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia'
 // import { Network } from '@capacitor/network';
-import { ref } from "vue";
-
+import { ref } from 'vue'
 
 export const useNetworkStore = defineStore('network', () => {
   const network = ref({
     connected: true,
     connectedType: 'wifi',
-  });
+  })
 
   // const setStatus = async () => {
   //   const status = await Network.getStatus();

@@ -2,7 +2,6 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { LocalStorage } from 'quasar'
 
-
 export const useSettingsStore = defineStore('settings', () => {
   const storeUrl = ref<string>(LocalStorage.getItem('storeUrl') || '')
 
@@ -13,6 +12,6 @@ export const useSettingsStore = defineStore('settings', () => {
 
   return {
     storeUrl,
-    setStoreUrl
+    setStoreUrl,
   }
 })

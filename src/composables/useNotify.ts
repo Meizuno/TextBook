@@ -2,15 +2,13 @@ import { useQuasar } from 'quasar'
 
 export function useNotify() {
   const q = useQuasar()
-  
+
   const success = (msg: string) => {
     q.notify({
       color: 'positive',
       icon: 'check_circle',
       message: msg,
-      actions: [
-        { icon: 'close', color: 'white', round: true, handler: () => {} }
-      ]
+      actions: [{ icon: 'close', color: 'white', round: true, handler: () => {} }],
     })
   }
 
@@ -19,7 +17,7 @@ export function useNotify() {
       type: 'ongoing',
       spinner: true,
       message: msg,
-      timeout: 0
+      timeout: 0,
     })
   }
 
@@ -28,9 +26,7 @@ export function useNotify() {
       color: 'negative',
       icon: 'error',
       message: msg,
-      actions: [
-        { icon: 'close', color: 'white', round: true, handler: () => {} }
-      ]
+      actions: [{ icon: 'close', color: 'white', round: true, handler: () => {} }],
     })
   }
 

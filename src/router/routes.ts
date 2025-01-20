@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -8,27 +8,27 @@ const routes: RouteRecordRaw[] = [
       {
         path: '',
         component: () => import('pages/MenuPage.vue'),
-        name: 'home'
+        name: 'home',
       },
       {
         path: 'active',
         component: () => import('pages/SelectedPage.vue'),
-        name: 'active'
+        name: 'active',
       },
       {
         path: 'file',
         component: () => import('pages/FilePage.vue'),
-        name: 'file'
+        name: 'file',
       },
       {
         path: 'folder',
         component: () => import('pages/FolderPage.vue'),
-        name: 'folder'
+        name: 'folder',
       },
       {
         path: 'settings',
         component: () => import('pages/SettingsPage.vue'),
-        name: 'settings'
+        name: 'settings',
       },
     ],
   },
@@ -39,6 +39,6 @@ const routes: RouteRecordRaw[] = [
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),
   },
-];
+]
 
-export default routes;
+export default routes

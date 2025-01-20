@@ -20,30 +20,31 @@
         <q-tab name="active" icon="visibility" @click="navigate('active')" />
         <q-tab name="file" icon="note_add" @click="navigate('file')" />
         <q-tab name="folder" icon="create_new_folder" @click="navigate('folder')" />
-        <q-tab name="settings" icon="tune" @click="navigate('settings')"/>
+        <q-tab name="settings" icon="tune" @click="navigate('settings')" />
       </q-tabs>
     </q-footer>
   </q-layout>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
-import { useNavigation } from 'src/composables/useNavigation';
-import { useAnimationStore } from 'src/stores/animation';
-import { storeToRefs } from 'pinia';
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { useNavigation } from 'src/composables/useNavigation'
+import { useAnimationStore } from 'src/stores/animation'
+import { storeToRefs } from 'pinia'
 
-const route = useRoute();
-const activeTab = ref(route.name as string);
+const route = useRoute()
+const activeTab = ref(route.name as string)
 
-watch(() => route.name, (newValue) => {
-  activeTab.value = newValue as string;
-});
+watch(
+  () => route.name,
+  (newValue) => {
+    activeTab.value = newValue as string
+  },
+)
 
-const { transitionName } = storeToRefs(useAnimationStore());
-const { navigate } = useNavigation();
-
-
+const { transitionName } = storeToRefs(useAnimationStore())
+const { navigate } = useNavigation()
 </script>
 
 <style scoped>

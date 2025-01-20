@@ -1,12 +1,6 @@
 <template>
   <div class="q-pa-md">
-    <q-input
-      dense
-      filled
-      v-model="filter"
-      label="Search"
-      class="q-my-md"
-    >
+    <q-input dense filled v-model="filter" label="Search" class="q-my-md">
       <template v-slot:append>
         <q-icon v-if="filter === ''" name="search" />
         <q-icon v-else name="clear" class="cursor-pointer" @click="filter = ''" />
@@ -18,23 +12,17 @@
       no-nodes-label="No files found"
       class="text-body1"
       :nodes="tree"
-      node-key='key'
+      node-key="key"
       :filter="filter"
     >
       <template v-slot:header-folder="prop">
         <div class="row no-wrap justify-between full-width">
-          <div class="row no-wrap ellipsis line items-center ">
+          <div class="row no-wrap ellipsis line items-center">
             <q-icon class="q-mr-sm text-blue-8" :name="prop.node.icon" />
             <div>{{ prop.node.label.split('.')[0] }}</div>
           </div>
           <div class="row no-wrap">
-            <q-btn
-              flat
-              dense
-              color="primary"
-              icon="edit"
-              @click="editFolder(prop.node)"
-            />
+            <q-btn flat dense color="primary" icon="edit" @click="editFolder(prop.node)" />
             <q-btn
               flat
               dense
@@ -47,21 +35,12 @@
       </template>
       <template v-slot:header-file="prop">
         <div class="row no-wrap justify-between gap-2 full-width">
-          <div
-            class="row no-wrap ellipsis items-center"
-            @click="chooseFile(prop.node)"
-          >
+          <div class="row no-wrap ellipsis items-center" @click="chooseFile(prop.node)">
             <q-icon size="20px" class="q-mr-xs text-blue-8" :name="prop.node.icon" />
             <div>{{ prop.node.label.split('.')[0] }}</div>
           </div>
           <div class="row no-wrap">
-            <q-btn
-              flat
-              dense
-              color="primary"
-              icon="edit"
-              @click="editFile(prop.node)"
-            />
+            <q-btn flat dense color="primary" icon="edit" @click="editFile(prop.node)" />
             <q-btn
               flat
               dense
@@ -73,19 +52,19 @@
         </div>
       </template>
     </q-tree>
-    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useNodeStore } from 'src/stores/node';
-import { useTreeStore } from 'src/stores/tree';
-import { useNotify } from 'src/composables/useNotify';
-import { storeToRefs } from 'pinia';
+import { ref } from 'vue'
+import { useNodeStore } from 'src/stores/node'
+import { useTreeStore } from 'src/stores/tree'
+import { useNotify } from 'src/composables/useNotify'
+import { storeToRefs } from 'pinia'
 import { useQuasar } from 'quasar'
-import { useNavigation } from 'src/composables/useNavigation';
-import { useNode } from 'src/composables/useNode';
-import { type TreeNode } from 'src/interface';
+import { useNavigation } from 'src/composables/useNavigation'
+import { useNode } from 'src/composables/useNode'
+import { type TreeNode } from 'src/interface'
 
 const q = useQuasar()
 const { setActiveNode, setSelectedNode } = useNodeStore()
@@ -99,13 +78,12 @@ const filter = ref('')
 const chooseFile = async (node: TreeNode) => {
   setActiveNode(node)
   await navigate('active')
-};
+}
 
 const editFolder = async (node: TreeNode) => {
   setSelectedNode(node)
   await navigate('folder')
-};
-
+}
 
 const confirmDeleteNode = (node: TreeNode) => {
   q.dialog({
@@ -115,15 +93,13 @@ const confirmDeleteNode = (node: TreeNode) => {
     persistent: true,
   }).onOk(() => {
     deleteNode(node).catch(() => {
-      error("Failed to delete")
-    });
-  });
-};
-
+      error('Failed to delete')
+    })
+  })
+}
 
 const editFile = async (node: TreeNode) => {
   setSelectedNode(node)
   await navigate('file')
-};
-
+}
 </script>

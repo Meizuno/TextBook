@@ -3,9 +3,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted } from 'vue'
 
-import { useTreeStore } from 'src/stores/tree';
+import { useTreeStore } from 'src/stores/tree'
 
 onMounted(async () => {
   const { setTree } = useTreeStore()
