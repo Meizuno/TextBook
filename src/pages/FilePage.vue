@@ -72,7 +72,7 @@ const { navigate } = useNavigation()
 const { createNode, editNode, getFolders } = useNode()
 
 onMounted(() => {
-  options.value = getFolders(selectedNode.value)
+  options.value = getFolders(selectedNode.value.path, selectedNode.value.label)
 })
 
 const onSubmit = async () => {

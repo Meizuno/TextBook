@@ -20,7 +20,7 @@
         v-bind="{ hint: options.length === 0 ? 'Make sure if folder exists' : '' }"
       />
 
-      <div class="row justify-between">
+      <div class="row justify-end">
         <q-btn label="Reset" type="reset" color="grey" class="q-ml-sm" />
         <q-btn label="Submit" type="submit" color="primary" class="q-ml-sm" />
       </div>
@@ -49,11 +49,10 @@ const { navigate } = useNavigation()
 const { createNode, editNode, getFolders } = useNode()
 
 onMounted(() => {
-  options.value = getFolders(selectedNode.value)
+  options.value = getFolders(selectedNode.value.path, selectedNode.value.label)
 })
 
 const onSubmit = async () => {
-  console.log(selectedNode.value)
   if (isCreated) {
     await createNode({
       key: selectedNode.value.key,

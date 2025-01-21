@@ -34,7 +34,7 @@ export const useNodeStore = defineStore('node', () => {
     selectedNode.value = {
       key: '',
       label: '',
-      path: '',
+      path: '/',
       content: '',
       type: '',
       children: [],
