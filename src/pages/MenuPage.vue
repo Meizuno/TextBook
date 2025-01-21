@@ -17,9 +17,9 @@
     >
       <template v-slot:header-folder="prop">
         <div class="row no-wrap justify-between full-width">
-          <div class="row no-wrap ellipsis line items-center">
+          <div class="row no-wrap ellipsis line items-center full-width">
             <q-icon class="q-mr-sm text-blue-8" :name="prop.node.icon" />
-            <div>{{ prop.node.label.split('.')[0] }}</div>
+            <div class="full-width">{{ prop.node.label.split('.')[0] }}</div>
           </div>
           <div class="row no-wrap">
             <q-btn flat dense color="primary" icon="edit" @click="editFolder(prop.node)" />
@@ -35,9 +35,9 @@
       </template>
       <template v-slot:header-file="prop">
         <div class="row no-wrap justify-between gap-2 full-width">
-          <div class="row no-wrap ellipsis items-center" @click="chooseFile(prop.node)">
+          <div class="row no-wrap ellipsis items-center full-width" @click="chooseFile(prop.node)">
             <q-icon size="20px" class="q-mr-xs text-blue-8" :name="prop.node.icon" />
-            <div>{{ prop.node.label.split('.')[0] }}</div>
+            <div class="flex-1">{{ prop.node.label.split('.')[0] }}</div>
           </div>
           <div class="row no-wrap">
             <q-btn flat dense color="primary" icon="edit" @click="editFile(prop.node)" />
