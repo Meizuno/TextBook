@@ -1,24 +1,42 @@
 <template>
   <q-page>
-    <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md q-pa-lg">
-      <q-input
-        filled
-        clearable
-        type="text"
-        v-model="selectedNode.label"
-        label="Name"
-        :rules="[(val) => val && val.length > 0]"
-      />
+    <q-form @submit="onSubmit" class="q-gutter-md q-pa-lg">
+      <q-input filled clearable type="text" v-model="selectedNode.label" label="Name" />
 
-      <q-select
-        filled
-        :disable="options.length === 0"
-        label="Path"
-        v-model="selectedNode.path"
-        :options="options"
-        :display-value="`${selectedNode.path ? selectedNode.path : ''}`"
-        v-bind="{ hint: options.length === 0 ? 'Make sure if folder exists' : '' }"
-      />
+      <q-input filled type="text" v-model="selectedNode.path" label="Path" @click="dialog = true" />
+      <q-dialog v-model="dialog">
+        <q-card
+          :class="[
+            $q.dark.isActive ? 'bg-dark text-white' : 'bg-white text-dark',
+            'w-80 shadow-lg rounded-md',
+          ]"
+        >
+          <q-card-section
+            :class="$q.dark.isActive ? 'bg-grey-9 text-white' : 'bg-primary text-white'"
+            class="flex justify-between"
+          >
+            <div class="text-h6">Path</div>
+            <q-btn flat color='primary' label="OK" v-close-popup />
+          </q-card-section>
+
+          <!-- Список -->
+          <q-card-section class="p-4">
+            <q-item
+              v-for="option in options"
+              :key="option"
+              clickable
+              v-ripple
+              :class="[$q.dark.isActive ? 'hover:bg-grey-7' : 'hover:bg-grey-2', 'rounded-md']"
+              @click="addPath(option)"
+            >
+              <q-icon color="primary" name="folder" size="md" class="q-mr-sm" />
+              <q-item-section>{{ option }}</q-item-section>
+            </q-item>
+          </q-card-section>
+
+          <q-separator />
+        </q-card>
+      </q-dialog>
 
       <q-input
         filled
@@ -38,10 +56,7 @@
           icon="remove_red_eye"
           @click="showPreview"
         />
-        <div>
-          <q-btn label="Reset" type="reset" color="grey" class="q-ml-sm" />
-          <q-btn label="Submit" type="submit" color="primary" class="q-ml-sm" />
-        </div>
+        <q-btn label="Submit" type="submit" color="primary" class="q-ml-sm" />
       </div>
     </q-form>
   </q-page>
@@ -61,10 +76,11 @@ import 'github-markdown-css/github-markdown.css'
 
 const q = useQuasar()
 const { selectedNode } = storeToRefs(useNodeStore())
-const { setSelectedNode, unselectNode } = useNodeStore()
+const { unselectNode } = useNodeStore()
 const savedSelectedNode = { ...selectedNode.value }
 const isCreated = ref(selectedNode.value.label ? false : true)
 const options = ref<string[]>([])
+const dialog = ref(false)
 
 const { success } = useNotify()
 const { setTree } = useTreeStore()
@@ -73,7 +89,24 @@ const { createNode, editNode, getFolders } = useNode()
 
 onMounted(() => {
   options.value = getFolders(selectedNode.value.path, selectedNode.value.label)
+  if (selectedNode.value.path !== '/') {
+    options.value = ['..', ...options.value]
+  }
 })
+
+const addPath = (path: string) => {
+  if (path === '..') {
+    selectedNode.value.path = selectedNode.value.path.split('/').slice(0, -1).join('/') || '/'
+  } else {
+    selectedNode.value.path = selectedNode.value.path.replace(/\/?$/, '/') + path
+  }
+
+  options.value = getFolders(selectedNode.value.path, selectedNode.value.label)
+
+  if (selectedNode.value.path !== '/') {
+    options.value = ['..', ...options.value]
+  }
+}
 
 const onSubmit = async () => {
   if (isCreated.value) {
@@ -85,10 +118,6 @@ const onSubmit = async () => {
   }
   await setTree()
   await navigate('home')
-}
-
-const onReset = () => {
-  setSelectedNode(savedSelectedNode)
 }
 
 const showPreview = async () => {
