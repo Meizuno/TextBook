@@ -53,8 +53,7 @@ export function useNode() {
     const traverse = (nodes: TreeNode[]) => {
       for (const node of nodes) {
         if (node.path === path) {
-          if (node.type === 'directory' && node.label !== name)
-            result.push(node.label)
+          if (node.type === 'directory' && node.label !== name) result.push(node.label)
         }
         if (node.children) {
           traverse(node.children)

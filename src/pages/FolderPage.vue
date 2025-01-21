@@ -10,7 +10,14 @@
         :rules="[(val) => val && val.length > 0]"
       />
 
-      <q-input filled type="text" v-model="selectedNode.path" label="Path" @click="dialog = true" />
+      <q-input
+        filled
+        type="text"
+        v-model="selectedNode.path"
+        label="Path"
+        @click="dialog = true"
+        readonly
+      />
       <q-dialog v-model="dialog">
         <q-card
           :class="[
@@ -23,7 +30,7 @@
             class="flex justify-between"
           >
             <div class="text-h6">Path</div>
-            <q-btn flat color='primary' label="OK" v-close-popup />
+            <q-btn flat :color="$q.dark.isActive ? 'primary' : 'white'" label="OK" v-close-popup />
           </q-card-section>
 
           <!-- Список -->

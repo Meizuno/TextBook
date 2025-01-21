@@ -3,7 +3,14 @@
     <q-form @submit="onSubmit" class="q-gutter-md q-pa-lg">
       <q-input filled clearable type="text" v-model="selectedNode.label" label="Name" />
 
-      <q-input filled type="text" v-model="selectedNode.path" label="Path" @click="dialog = true" />
+      <q-input
+        filled
+        type="text"
+        v-model="selectedNode.path"
+        label="Path"
+        @click="dialog = true"
+        readonly
+      />
       <q-dialog v-model="dialog">
         <q-card
           :class="[
@@ -16,7 +23,7 @@
             class="flex justify-between"
           >
             <div class="text-h6">Path</div>
-            <q-btn flat color='primary' label="OK" v-close-popup />
+            <q-btn flat :color="$q.dark.isActive ? 'primary' : 'white'" label="OK" v-close-popup />
           </q-card-section>
 
           <!-- Список -->
