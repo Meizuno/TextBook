@@ -108,12 +108,16 @@ const addStoreUrl = () => {
     },
   }).onOk((data) => {
     if (!data) {
-      setStoreUrl('')
+      setStoreUrl('').catch(() => {
+        console.error('Failed to reset storeUrl')
+      })
     } else {
       if (!isValidUrl(data)) {
         error('Invalid URL!')
       } else {
-        setStoreUrl(data)
+        setStoreUrl(data).catch(() => {
+          console.error('Failed to reset storeUrl')
+        })
       }
     }
   })
