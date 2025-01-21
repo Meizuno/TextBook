@@ -45,7 +45,7 @@
       >
         <div class="flex justify-between px-1">
           <div>Version</div>
-          <div>1.0</div>
+          <div>2.0</div>
         </div>
         <div class="h-0.5" :class="$q.dark.isActive ? 'bg-grey-7' : 'bg-grey-3'"></div>
         <div class="flex justify-between px-1">
