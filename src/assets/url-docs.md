@@ -1,22 +1,94 @@
 ### Server should have 2 endpoints
 
-- Download data
+- Read items
 
   ```
   GET /
   ```
 
   - with parameters **`null`**
-  - with response data **`UploadNode[]`**
+  - with response data **`TreeNode[]`**
 
-- Upload data
+- Create item
 
   ```
-  POST /files
+  POST /item
   ```
 
-  - with body **`UploadNode[]`**
-  - with response data **`null`**
+  - with body
+
+    ```ts
+    {
+      label: string;
+      path: string;
+      children?: TreeNode[] | null;
+      content: string;
+      type: string = 'file' | "directory";
+    }
+    ```
+
+  - with response data
+  
+    ```ts
+    null
+    ```
+
+- Update item
+
+  ```
+  PUT /item
+  ```
+
+  - with body
+
+    ```ts
+    { 
+      "old_item": {
+        label: string;
+        path: string;
+        children?: TreeNode[] | null;
+        content: string;
+        type: string = 'file' | "directory";
+      },
+      "new_item": {
+        label: string;
+        path: string;
+        children?: TreeNode[] | null;
+        content: string;
+        type: string = 'file' | "directory";
+      }
+    }
+    ```
+
+  - with response data
+    
+    ```ts
+    null
+    ```
+
+- Delete item
+
+  ```
+  DELETE /item
+  ```
+
+  - with body
+
+    ```ts
+    {
+      label: string;
+      path: string;
+      children?: TreeNode[] | null;
+      content: string;
+      type: string = 'file' | "directory";
+    }
+    ```
+
+  - with response data
+  
+    ```ts
+    null
+    ```
 
 ### Schema
 
