@@ -1,5 +1,13 @@
 <template>
-  <q-input filled type="text" v-model="path" label="Path" @click="dialog = true" readonly />
+  <q-input
+    filled
+    type="text"
+    v-model="path"
+    label="Path"
+    @click="dialog = true"
+    readonly
+    hint=""
+  />
   <q-dialog v-model="dialog">
     <q-card
       :class="[
@@ -8,20 +16,43 @@
       ]"
     >
       <q-card-section
-        :class="$q.dark.isActive ? 'bg-grey-9 text-white' : 'bg-primary text-white'"
+        :class="
+          $q.dark.isActive ? 'bg-grey-9 text-white' : 'bg-primary text-white'
+        "
         class="flex justify-between"
       >
         <div class="text-h6">Path</div>
-        <q-btn flat :color="$q.dark.isActive ? 'primary' : 'white'" label="OK" v-close-popup />
+        <div>
+          <q-btn
+            v-if="path !== '/'"
+            flat
+            :color="$q.dark.isActive ? 'primary' : 'white'"
+            label="Back"
+            @click="back"
+          />
+          <q-btn
+            flat
+            :color="$q.dark.isActive ? 'primary' : 'white'"
+            label="OK"
+            v-close-popup
+          />
+        </div>
       </q-card-section>
 
       <q-card-section class="p-4">
+        <div v-if="options.length === 0" class="text-center text-grey-7">
+          No folders
+        </div>
         <q-item
+          v-else
           v-for="option in options"
           :key="option"
           clickable
           v-ripple
-          :class="[$q.dark.isActive ? 'hover:bg-grey-7' : 'hover:bg-grey-2', 'rounded-md']"
+          :class="[
+            $q.dark.isActive ? 'hover:bg-grey-7' : 'hover:bg-grey-2',
+            'rounded-md',
+          ]"
           @click="addPath(option)"
         >
           <q-icon color="primary" name="folder" size="md" class="q-mr-sm" />
@@ -35,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, watch } from 'vue'
 
 import { useNode } from 'src/composables/useNode'
 
@@ -47,32 +78,19 @@ const props = defineProps({
   },
 })
 
-const options = ref<string[]>([])
-const dialog = ref(false)
-
 const { getFolders } = useNode()
+const options = ref<string[]>(getFolders(path.value, props.label))
+const dialog = ref(false)
 
 watch(path, () => {
   options.value = getFolders(path.value, props.label)
-
-  if (path.value !== '/') {
-    options.value = ['..', ...options.value]
-  }
 })
 
-onMounted(() => {
-  options.value = getFolders(path.value, props.label)
-  options.value = getFolders(path.value, props.label)
-  if (path.value !== '/') {
-    options.value = ['..', ...options.value]
-  }
-})
+const back = () => {
+  path.value = path.value.split('/').slice(0, -1).join('/') || '/'
+}
 
 const addPath = (option: string) => {
-  if (option === '..') {
-    path.value = path.value.split('/').slice(0, -1).join('/') || '/'
-  } else {
-    path.value = path.value.replace(/\/?$/, '/') + option
-  }
+  path.value = path.value.replace(/\/?$/, '/') + option
 }
 </script>

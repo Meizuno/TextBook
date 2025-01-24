@@ -28,7 +28,7 @@
     ```
 
   - with response data
-  
+
     ```ts
     null
     ```
@@ -42,7 +42,7 @@
   - with body
 
     ```ts
-    { 
+    {
       "old_item": {
         label: string;
         path: string;
@@ -61,7 +61,7 @@
     ```
 
   - with response data
-    
+
     ```ts
     null
     ```
@@ -85,7 +85,7 @@
     ```
 
   - with response data
-  
+
     ```ts
     null
     ```

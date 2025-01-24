@@ -16,3 +16,20 @@
   background-color: var(--bg-layout);
   color: var(--text-layout);
 }
+
+.slide-left-enter-active,
+.slide-left-leave-active,
+.slide-right-leave-active,
+.slide-right-enter-active {
+  transition: transform 0.2s ease-in-out;
+}
+
+.slide-left-enter-from,
+.slide-right-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-left-leave-to,
+.slide-right-enter-from {
+  transform: translateX(-100%);
+}

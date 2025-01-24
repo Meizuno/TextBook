@@ -1,15 +1,7 @@
 <template>
   <q-page>
     <q-form @submit="onSubmit" class="q-gutter-md q-pa-lg">
-      <q-input
-        filled
-        clearable
-        type="text"
-        v-model="selectedNode.label"
-        label="Name"
-        :rules="[(val) => val && val.length > 0]"
-      />
-
+      <name-input v-model="selectedNode.label" />
       <path-input v-model="selectedNode.path" :label="selectedNode.label" />
 
       <q-input
@@ -37,13 +29,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeUnmount, onMounted } from 'vue'
+import { ref, onBeforeUnmount, onMounted, inject, type Ref } from 'vue'
 import { useNodeStore } from 'src/stores/node'
-import { useTreeStore } from 'src/stores/tree'
 import { useNavigation } from 'src/composables/useNavigation'
 import { useNode } from 'src/composables/useNode'
 import { useNotify } from 'src/composables/useNotify'
 import { storeToRefs } from 'pinia'
+
+import PathInput from 'src/components/PathInput.vue'
+import NameInput from 'src/components/NameInput.vue'
 import { useQuasar } from 'quasar'
 import { marked } from 'marked'
 import 'github-markdown-css/github-markdown.css'
@@ -55,8 +49,10 @@ const savedSelectedNode = { ...selectedNode.value }
 const isCreated = ref(selectedNode.value.label ? false : true)
 const options = ref<string[]>([])
 
+const pageTitle = inject('pageTitle') as Ref<string>
+pageTitle.value = selectedNode.value.label ? 'Edit File' : 'New File'
+
 const { success } = useNotify()
-const { setTree } = useTreeStore()
 const { navigate } = useNavigation()
 const { createNode, editNode, getFolders } = useNode()
 
@@ -75,7 +71,6 @@ const onSubmit = async () => {
     await editNode(savedSelectedNode, selectedNode.value)
     success('File updated')
   }
-  await setTree()
   await navigate('home')
 }
 

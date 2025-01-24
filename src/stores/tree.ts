@@ -5,10 +5,17 @@ import { type TreeNode } from 'src/interface'
 
 export const useTreeStore = defineStore('tree', () => {
   const tree = ref<TreeNode[]>([])
+  const loadingTree = ref(false)
 
-  const setTree = async () => {
+  const delay = async (ms: number) =>
+    await new Promise((resolve) => setTimeout(resolve, ms))
+  
+  const setTree = async (ms?: number) => {
+    loadingTree.value = true
+    if (ms) await delay(ms)
     const { data } = await api.get('/')
     tree.value = await Promise.all(data.map(extendNode))
+    loadingTree.value = false
   }
 
   const extendNode = async (node: TreeNode): Promise<TreeNode> => {
@@ -17,7 +24,9 @@ export const useTreeStore = defineStore('tree', () => {
       key: node.path + node.label,
       path: node.path,
       content: node.content,
-      children: node.children ? await Promise.all(node.children.map(extendNode)) : [],
+      children: node.children
+        ? await Promise.all(node.children.map(extendNode))
+        : [],
       label: node.label,
       type: node.type,
       header: isDir ? 'folder' : 'file',
@@ -27,6 +36,7 @@ export const useTreeStore = defineStore('tree', () => {
 
   return {
     tree,
+    loadingTree,
     setTree,
   }
 })

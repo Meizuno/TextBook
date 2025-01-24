@@ -1,15 +1,7 @@
 <template>
   <q-page>
     <q-form @submit="onSubmit" class="q-gutter-md q-pa-lg">
-      <q-input
-        filled
-        clearable
-        type="text"
-        v-model="selectedNode.label"
-        label="Name"
-        :rules="[(val) => val && val.length > 0]"
-      />
-
+      <name-input v-model="selectedNode.label" />
       <path-input v-model="selectedNode.path" :label="selectedNode.label" />
 
       <div class="row justify-end">
@@ -20,12 +12,12 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount } from 'vue'
+import { onBeforeUnmount, inject, type Ref } from 'vue'
 
 import PathInput from 'src/components/PathInput.vue'
+import NameInput from 'src/components/NameInput.vue'
 
 import { useNodeStore } from 'src/stores/node'
-import { useTreeStore } from 'src/stores/tree'
 import { useNavigation } from 'src/composables/useNavigation'
 import { useNode } from 'src/composables/useNode'
 import { useNotify } from 'src/composables/useNotify'
@@ -36,8 +28,10 @@ const { unselectNode } = useNodeStore()
 const savedSelectedNode = { ...selectedNode.value }
 const isCreated = selectedNode.value.label ? false : true
 
+const pageTitle = inject('pageTitle') as Ref<string>
+pageTitle.value = selectedNode.value.label ? 'Edit Folder' : 'New Folder'
+
 const { success } = useNotify()
-const { setTree } = useTreeStore()
 const { navigate } = useNavigation()
 const { createNode, editNode } = useNode()
 
@@ -58,7 +52,6 @@ const onSubmit = async () => {
     await editNode(savedSelectedNode, selectedNode.value)
     success('Folder updated')
   }
-  await setTree()
   await navigate('home')
 }
 

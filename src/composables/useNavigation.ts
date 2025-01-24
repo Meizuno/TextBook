@@ -9,7 +9,9 @@ export function useNavigation() {
     const currentIndex = router.options.routes[0]?.children?.findIndex(
       (route) => route.name === router.currentRoute.value.name,
     )
-    const nextIndex = router.options.routes[0]?.children?.findIndex((route) => route.name === name)
+    const nextIndex = router.options.routes[0]?.children?.findIndex(
+      (route) => route.name === name,
+    )
 
     if (currentIndex !== undefined && nextIndex !== undefined) {
       setTransitionName(currentIndex < nextIndex ? 'slide-left' : 'slide-right')

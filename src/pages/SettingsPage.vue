@@ -47,7 +47,10 @@
           <div>Version</div>
           <div>2.0</div>
         </div>
-        <div class="h-0.5" :class="$q.dark.isActive ? 'bg-grey-7' : 'bg-grey-3'"></div>
+        <div
+          class="h-0.5"
+          :class="$q.dark.isActive ? 'bg-grey-7' : 'bg-grey-3'"
+        ></div>
         <div class="flex justify-between px-1">
           <div>License</div>
           <a
@@ -64,6 +67,7 @@
 </template>
 
 <script setup lang="ts">
+import { inject, type Ref } from 'vue'
 import { useQuasar } from 'quasar'
 import { useSettingsStore } from 'src/stores/settings'
 import { useNetworkStore } from 'src/stores/network'
@@ -72,6 +76,9 @@ import { storeToRefs } from 'pinia'
 import urlDocs from 'src/assets/url-docs.md?raw'
 import { marked } from 'marked'
 import 'github-markdown-css/github-markdown.css'
+
+const pageTitle = inject('pageTitle') as Ref<string>
+pageTitle.value = 'Settings'
 
 const q = useQuasar()
 const { error } = useNotify()
