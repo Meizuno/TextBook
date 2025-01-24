@@ -9,7 +9,11 @@
     <q-page-container>
       <router-view v-slot="{ Component }">
         <transition :name="transitionName" mode="out-in">
-          <component :is="Component" />
+          <component
+            :is="Component"
+            @touchstart="onTouchStart"
+            @touchend="onTouchEnd"
+          />
         </transition>
       </router-view>
     </q-page-container>
@@ -53,8 +57,26 @@ watch(
 )
 
 const { transitionName } = storeToRefs(useAnimationStore())
-const { navigate } = useNavigation()
+const { navigate, swipeRight, swipeLeft } = useNavigation()
 
 const pageTitle = ref('Text Book')
 provide('pageTitle', pageTitle)
+
+const touchStartX = ref(0)
+
+const onTouchStart = (event: TouchEvent) => {
+  touchStartX.value = event.changedTouches[0]?.screenX || 0
+}
+
+const onTouchEnd = async (event: TouchEvent) => {
+  const touchEndX = event.changedTouches[0]?.screenX || 0
+  const swipeThreshold = 100
+
+  if (touchStartX.value - touchEndX > swipeThreshold) {
+    await swipeLeft()
+  } else if (touchEndX - touchStartX.value > swipeThreshold) {
+    await swipeRight()
+  }
+}
+
 </script>

@@ -12,7 +12,6 @@ export const useNodeStore = defineStore('node', () => {
     type: '',
     children: [],
     header: '',
-    icon: '',
   })
 
   const activeNode = ref<TreeNode | null>(
@@ -39,7 +38,6 @@ export const useNodeStore = defineStore('node', () => {
       type: '',
       children: [],
       header: '',
-      icon: '',
     }
   }
 

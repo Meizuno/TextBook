@@ -30,7 +30,6 @@ export const useTreeStore = defineStore('tree', () => {
       label: node.label,
       type: node.type,
       header: isDir ? 'folder' : 'file',
-      icon: isDir ? 'room_service' : 'restaurant_menu',
     }
   }
 

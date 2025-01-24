@@ -46,11 +46,11 @@ const q = useQuasar()
 const { selectedNode } = storeToRefs(useNodeStore())
 const { unselectNode } = useNodeStore()
 const savedSelectedNode = { ...selectedNode.value }
-const isCreated = ref(selectedNode.value.label ? false : true)
+const isCreated = selectedNode.value.label ? false : true
 const options = ref<string[]>([])
 
 const pageTitle = inject('pageTitle') as Ref<string>
-pageTitle.value = selectedNode.value.label ? 'Edit File' : 'New File'
+pageTitle.value = isCreated ? 'New File' : 'Edit File'
 
 const { success } = useNotify()
 const { navigate } = useNavigation()
@@ -64,7 +64,7 @@ onMounted(() => {
 })
 
 const onSubmit = async () => {
-  if (isCreated.value) {
+  if (isCreated) {
     await createNode(selectedNode.value)
     success('File created')
   } else {

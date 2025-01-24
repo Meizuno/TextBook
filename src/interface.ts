@@ -6,5 +6,4 @@ export interface TreeNode {
   content: string
   children?: TreeNode[]
   header: string
-  icon: string
 }

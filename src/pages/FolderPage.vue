@@ -29,7 +29,7 @@ const savedSelectedNode = { ...selectedNode.value }
 const isCreated = selectedNode.value.label ? false : true
 
 const pageTitle = inject('pageTitle') as Ref<string>
-pageTitle.value = selectedNode.value.label ? 'Edit Folder' : 'New Folder'
+pageTitle.value = isCreated ? 'New Folder' : 'Edit Folder'
 
 const { success } = useNotify()
 const { navigate } = useNavigation()
@@ -45,7 +45,6 @@ const onSubmit = async () => {
       content: '',
       children: [],
       header: '',
-      icon: '',
     })
     success('Folder created')
   } else {

@@ -3,7 +3,6 @@
     <q-pull-to-refresh
       @refresh="refresh"
       :bg-color="q.dark.isActive ? 'dark' : 'white'"
-      class="relative-position"
     >
       <div class="q-pa-md">
         <q-input dense filled v-model="filter" label="Search" class="q-my-md">
@@ -30,7 +29,7 @@
           <template v-slot:header-folder="prop">
             <div class="row no-wrap justify-between full-width">
               <div class="row no-wrap ellipsis line items-center full-width">
-                <q-icon class="q-mr-sm text-blue-8" :name="prop.node.icon" />
+                <q-icon class="q-mr-sm text-blue-8" name="room_service" />
                 <div class="full-width">{{ prop.node.label }}</div>
               </div>
               <q-btn
@@ -51,7 +50,7 @@
                 <q-icon
                   size="20px"
                   class="q-mr-xs text-blue-8"
-                  :name="prop.node.icon"
+                  name="restaurant_menu"
                 />
                 <div class="flex-1">{{ prop.node.label }}</div>
               </div>

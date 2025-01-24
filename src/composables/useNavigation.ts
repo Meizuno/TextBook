@@ -20,7 +20,39 @@ export function useNavigation() {
     await router.push({ name })
   }
 
+  const swipeRight = async () => {
+    const currentIndex =
+      router.options.routes[0]?.children?.findIndex(
+        (route) => route.name === router.currentRoute.value.name,
+      ) || 0
+    const nextIndex = currentIndex - 1
+
+    const routeName = router.options.routes[0]?.children?.[nextIndex]
+      ?.name as string
+
+    if (routeName) {
+      await navigate(routeName)
+    }
+  }
+
+  const swipeLeft = async () => {
+    const currentIndex =
+      router.options.routes[0]?.children?.findIndex(
+        (route) => route.name === router.currentRoute.value.name,
+      ) || 0
+    const nextIndex = currentIndex + 1
+
+    const routeName = router.options.routes[0]?.children?.[nextIndex]
+      ?.name as string
+
+    if (routeName) {
+      await navigate(routeName)
+    }
+  }
+
   return {
     navigate,
+    swipeRight,
+    swipeLeft,
   }
 }
