@@ -80,6 +80,8 @@ import { storeToRefs } from 'pinia'
 import { useQuasar } from 'quasar'
 import { marked } from 'marked'
 import 'github-markdown-css/github-markdown.css'
+import { type TreeNode } from 'src/interface'
+
 
 const q = useQuasar()
 const { selectedNode } = storeToRefs(useNodeStore())
@@ -89,10 +91,10 @@ const isCreated = ref(selectedNode.value.label ? false : true)
 const options = ref<string[]>([])
 const dialog = ref(false)
 
-const { success } = useNotify()
+const { success, error } = useNotify()
 const { setTree } = useTreeStore()
 const { navigate } = useNavigation()
-const { createNode, editNode, getFolders } = useNode()
+const { createNode, editNode, deleteNode, getFolders } = useNode()
 
 onMounted(() => {
   options.value = getFolders(selectedNode.value.path, selectedNode.value.label)
@@ -120,8 +122,13 @@ const onSubmit = async () => {
     await createNode(selectedNode.value)
     success('File created')
   } else {
-    await editNode(savedSelectedNode, selectedNode.value)
-    success('File updated')
+    if (!selectedNode.value.label) {
+      confirmDeleteNode(selectedNode.value)
+      success('File deleted')
+    } else {
+      await editNode(savedSelectedNode, selectedNode.value)
+      success('File updated')
+    }
   }
   await setTree()
   await navigate('home')
@@ -132,6 +139,19 @@ const showPreview = async () => {
     message: await marked(selectedNode.value.content),
     html: true,
     class: 'markdown-body',
+  })
+}
+
+const confirmDeleteNode = (node: TreeNode) => {
+  q.dialog({
+    title: 'Confirm',
+    message: 'Are you sure you want to delete',
+    cancel: true,
+    persistent: true,
+  }).onOk(() => {
+    deleteNode(node).catch(() => {
+      error('Failed to delete')
+    })
   })
 }
 

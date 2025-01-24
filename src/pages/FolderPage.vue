@@ -7,7 +7,6 @@
         type="text"
         v-model="selectedNode.label"
         label="Name"
-        :rules="[(val) => val && val.length > 0]"
       />
 
       <q-input
@@ -33,7 +32,6 @@
             <q-btn flat :color="$q.dark.isActive ? 'primary' : 'white'" label="OK" v-close-popup />
           </q-card-section>
 
-          <!-- Список -->
           <q-card-section class="p-4">
             <q-item
               v-for="option in options"
@@ -67,7 +65,10 @@ import { useNavigation } from 'src/composables/useNavigation'
 import { useNode } from 'src/composables/useNode'
 import { useNotify } from 'src/composables/useNotify'
 import { storeToRefs } from 'pinia'
+import { useQuasar } from 'quasar'
+import { type TreeNode } from 'src/interface'
 
+const q = useQuasar()
 const { selectedNode } = storeToRefs(useNodeStore())
 const { unselectNode } = useNodeStore()
 const savedSelectedNode = { ...selectedNode.value }
@@ -75,10 +76,10 @@ const isCreated = selectedNode.value.label ? false : true
 const options = ref<string[]>([])
 const dialog = ref(false)
 
-const { success } = useNotify()
+const { success, error } = useNotify()
 const { setTree } = useTreeStore()
 const { navigate } = useNavigation()
-const { createNode, editNode, getFolders } = useNode()
+const { createNode, editNode, deleteNode, getFolders } = useNode()
 
 onMounted(() => {
   options.value = getFolders(selectedNode.value.path, selectedNode.value.label)
@@ -116,11 +117,29 @@ const onSubmit = async () => {
     })
     success('Folder created')
   } else {
-    await editNode(savedSelectedNode, selectedNode.value)
-    success('folder updated')
+    if (!selectedNode.value.label) {
+      confirmDeleteNode(selectedNode.value)
+      success('Folder deleted')
+    } else {
+      await editNode(savedSelectedNode, selectedNode.value)
+      success('Folder updated')
+    }
   }
   await setTree()
   await navigate('home')
+}
+
+const confirmDeleteNode = (node: TreeNode) => {
+  q.dialog({
+    title: 'Confirm',
+    message: 'Are you sure you want to delete',
+    cancel: true,
+    persistent: true,
+  }).onOk(() => {
+    deleteNode(node).catch(() => {
+      error('Failed to delete')
+    })
+  })
 }
 
 onBeforeUnmount(() => {
