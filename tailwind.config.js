@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'media',
   corePlugins: {
     preflight: false,
   },

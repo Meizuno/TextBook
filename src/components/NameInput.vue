@@ -10,7 +10,5 @@
 </template>
 
 <script setup lang="ts">
-
 const label = defineModel({ type: String, required: true })
-
 </script>

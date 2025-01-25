@@ -9,7 +9,7 @@ export const useTreeStore = defineStore('tree', () => {
 
   const delay = async (ms: number) =>
     await new Promise((resolve) => setTimeout(resolve, ms))
-  
+
   const setTree = async (ms?: number) => {
     loadingTree.value = true
     if (ms) await delay(ms)

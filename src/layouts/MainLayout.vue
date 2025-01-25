@@ -6,7 +6,8 @@
       </q-toolbar>
     </q-header>
 
-    <q-page-container>
+    <!-- Render if mobile -->
+    <q-page-container v-if="$q.screen.lt.lg">
       <router-view v-slot="{ Component }">
         <transition :name="transitionName" mode="out-in">
           <component
@@ -18,7 +19,13 @@
       </router-view>
     </q-page-container>
 
-    <q-footer elevated class="layout">
+    <!-- Render if desktop -->
+    <q-page-container v-else class="h-screen overflow-hidden">
+      <desktop-page />
+    </q-page-container>
+
+    <!-- Render if mobile -->
+    <q-footer elevated class="layout" v-if="$q.screen.lt.lg">
       <q-tabs
         no-caps
         v-model="activeTab"
@@ -27,12 +34,12 @@
       >
         <q-tab name="home" icon="home" @click="navigate('home')" />
         <q-tab name="active" icon="visibility" @click="navigate('active')" />
-        <q-tab name="file" icon="note_add" @click="navigate('file')" />
         <q-tab
           name="folder"
           icon="create_new_folder"
           @click="navigate('folder')"
         />
+        <q-tab name="file" icon="note_add" @click="navigate('file')" />
         <q-tab name="settings" icon="tune" @click="navigate('settings')" />
       </q-tabs>
     </q-footer>
@@ -45,6 +52,8 @@ import { useRoute } from 'vue-router'
 import { useNavigation } from 'src/composables/useNavigation'
 import { useAnimationStore } from 'src/stores/animation'
 import { storeToRefs } from 'pinia'
+
+import DesktopPage from 'src/pages/DesktopPage.vue'
 
 const route = useRoute()
 const activeTab = ref(route.name as string)
@@ -78,5 +87,4 @@ const onTouchEnd = async (event: TouchEvent) => {
     await swipeRight()
   }
 }
-
 </script>
