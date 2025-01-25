@@ -64,17 +64,16 @@
             </div>
           </template>
         </q-tree>
-        <div
-          v-else
-          class="flex flex-center"
-        >
-          <q-spinner
-            color="primary"
-            size="3em"
+        <div v-else>
+          <q-skeleton
+            v-for="_ in tree.length"
+            :key="_"
+            height="30px"
+            :type="'rect'"
+            class="q-my-md q-mx-sm"
           />
         </div>
       </div>
-
     </q-pull-to-refresh>
   </q-page>
 </template>
@@ -101,7 +100,7 @@ const filter = ref('')
 
 const refresh = async (done: () => void) => {
   done()
-  await setTree(500)
+  await setTree(1000)
 }
 
 const chooseFile = async (node: TreeNode) => {
