@@ -37,6 +37,8 @@ export default defineConfig((/* ctx */) => {
         node: 'node20',
       },
 
+      publicPath: '/TextBook/',
+
       typescript: {
         strict: true,
         vueShim: true,
