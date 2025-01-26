@@ -45,7 +45,7 @@
       >
         <div class="flex justify-between px-1">
           <div>Version</div>
-          <div>2.0</div>
+          <div>2.1</div>
         </div>
         <div
           class="h-0.5"
