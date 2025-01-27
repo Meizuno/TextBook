@@ -6,6 +6,7 @@ import { type TreeNode } from 'src/interface'
 export const useTreeStore = defineStore('tree', () => {
   const tree = ref<TreeNode[]>([])
   const loadingTree = ref(false)
+  const expandedNodes = ref<string[]>([])
 
   const delay = async (ms: number) =>
     await new Promise((resolve) => setTimeout(resolve, ms))
@@ -33,10 +34,16 @@ export const useTreeStore = defineStore('tree', () => {
     }
   }
 
+  const setExpanded = (nodes: string[]) => {
+    expandedNodes.value = nodes
+  }
+
   return {
     tree,
     loadingTree,
+    expandedNodes,
     setTree,
+    setExpanded,
   }
 })
 

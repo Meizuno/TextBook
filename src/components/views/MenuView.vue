@@ -29,6 +29,7 @@
         :nodes="tree"
         node-key="key"
         :filter="filter"
+        v-model:expanded="expandedTree.value"
       >
         <template v-slot:header-folder="prop">
           <div class="row no-wrap justify-between full-width">
@@ -83,7 +84,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, type Ref } from 'vue'
+import { ref, computed, inject, type Ref } from 'vue'
 import { useNodeStore } from 'src/stores/node'
 import { useTreeStore } from 'src/stores/tree'
 import { storeToRefs } from 'pinia'
@@ -93,14 +94,19 @@ import { type TreeNode } from 'src/interface'
 
 const q = useQuasar()
 const { setActiveNode, setSelectedNode } = useNodeStore()
-const { tree, loadingTree } = storeToRefs(useTreeStore())
-const { setTree } = useTreeStore()
+const { tree, loadingTree, expandedNodes } = storeToRefs(useTreeStore())
+const { setTree, setExpanded } = useTreeStore()
 const { navigate } = useNavigation()
 
 const pageTitle = inject('pageTitle') as Ref<string>
 pageTitle.value = 'Text Book'
 
 const filter = ref('')
+
+const expandedTree = computed({
+  get: () => expandedNodes,
+  set: (value: string[]) => setExpanded(value)
+});
 
 const refresh = async (done: () => void) => {
   done()
