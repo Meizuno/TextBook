@@ -2,18 +2,20 @@
   <q-form @submit="onSubmit" class="q-gutter-md q-pa-lg">
     <name-input v-model="selectedNode.label" />
     <path-input v-model="selectedNode.path" :label="selectedNode.label" />
-
-    <div class="row justify-end">
-      <q-btn label="Submit" type="submit" color="primary" class="q-ml-sm" />
-    </div>
+    <q-btn
+      label="Submit"
+      type="submit"
+      color="primary"
+      class="q-ml-sm float-right"
+    />
   </q-form>
 </template>
 
 <script setup lang="ts">
 import { onBeforeUnmount, inject, type Ref } from 'vue'
 
-import PathInput from 'src/components/PathInput.vue'
-import NameInput from 'src/components/NameInput.vue'
+import PathInput from 'src/components/form/PathInput.vue'
+import NameInput from 'src/components/form/NameInput.vue'
 
 import { useNodeStore } from 'src/stores/node'
 import { useNavigation } from 'src/composables/useNavigation'

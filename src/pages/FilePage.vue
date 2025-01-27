@@ -5,5 +5,5 @@
 </template>
 
 <script setup lang="ts">
-import FileView from 'src/components/FileView.vue'
+import FileView from 'src/components/views/FileView.vue'
 </script>

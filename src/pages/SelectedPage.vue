@@ -5,5 +5,5 @@
 </template>
 
 <script setup lang="ts">
-import SelectedView from 'src/components/SelectedView.vue'
+import SelectedView from 'src/components/views/SelectedView.vue'
 </script>

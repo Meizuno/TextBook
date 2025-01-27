@@ -5,5 +5,5 @@
 </template>
 
 <script setup lang="ts">
-import SettingsView from 'src/components/SettingsView.vue'
+import SettingsView from 'src/components/views/SettingsView.vue'
 </script>

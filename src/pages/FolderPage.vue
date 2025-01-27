@@ -5,5 +5,5 @@
 </template>
 
 <script setup lang="ts">
-import FolderView from 'src/components/FolderView.vue'
+import FolderView from 'src/components/views/FolderView.vue'
 </script>

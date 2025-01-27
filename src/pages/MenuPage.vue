@@ -5,5 +5,5 @@
 </template>
 
 <script setup lang="ts">
-import MenuView from 'src/components/MenuView.vue'
+import MenuView from 'src/components/views/MenuView.vue'
 </script>

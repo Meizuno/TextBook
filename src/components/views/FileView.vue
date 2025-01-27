@@ -2,27 +2,13 @@
   <q-form @submit="onSubmit" class="q-gutter-md q-pa-lg">
     <name-input v-model="selectedNode.label" />
     <path-input v-model="selectedNode.path" :label="selectedNode.label" />
-
-    <q-input
-      filled
-      autogrow
-      type="textarea"
-      v-model="selectedNode.content"
-      label="Text"
-      rows="3"
+    <content-input v-model="selectedNode.content" />
+    <q-btn
+      label="Submit"
+      type="submit"
+      color="primary"
+      class="q-ml-sm float-right"
     />
-
-    <div class="row justify-between">
-      <q-btn
-        color="secondary"
-        :disable="!selectedNode?.content"
-        round
-        size="12px"
-        icon="remove_red_eye"
-        @click="showPreview"
-      />
-      <q-btn label="Submit" type="submit" color="primary" class="q-ml-sm" />
-    </div>
   </q-form>
 </template>
 
@@ -34,13 +20,10 @@ import { useNode } from 'src/composables/useNode'
 import { useNotify } from 'src/composables/useNotify'
 import { storeToRefs } from 'pinia'
 
-import PathInput from 'src/components/PathInput.vue'
-import NameInput from 'src/components/NameInput.vue'
-import { useQuasar } from 'quasar'
-import { marked } from 'marked'
-import 'github-markdown-css/github-markdown.css'
+import PathInput from 'src/components/form/PathInput.vue'
+import NameInput from 'src/components/form/NameInput.vue'
+import ContentInput from 'src/components/form/ContentInput.vue'
 
-const q = useQuasar()
 const { selectedNode } = storeToRefs(useNodeStore())
 const { unselectNode } = useNodeStore()
 const savedSelectedNode = { ...selectedNode.value }
@@ -70,14 +53,6 @@ const onSubmit = async () => {
     success('File updated')
   }
   await navigate('home')
-}
-
-const showPreview = async () => {
-  q.dialog({
-    message: await marked(selectedNode.value.content),
-    html: true,
-    class: 'markdown-body',
-  })
 }
 
 onBeforeUnmount(() => {

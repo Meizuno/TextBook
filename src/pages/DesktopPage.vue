@@ -70,11 +70,11 @@
 </template>
 
 <script setup lang="ts">
-import MenuView from 'src/components/MenuView.vue'
-import SelectedView from 'src/components/SelectedView.vue'
-import FolderView from 'src/components/FolderView.vue'
-import SettingsView from 'src/components/SettingsView.vue'
-import FileView from 'src/components/FileView.vue'
+import MenuView from 'src/components/views/MenuView.vue'
+import SelectedView from 'src/components/views/SelectedView.vue'
+import FolderView from 'src/components/views/FolderView.vue'
+import SettingsView from 'src/components/views/SettingsView.vue'
+import FileView from 'src/components/views/FileView.vue'
 
 import { useNodeStore } from 'src/stores/node'
 import { storeToRefs } from 'pinia'
