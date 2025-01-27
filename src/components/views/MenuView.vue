@@ -22,53 +22,53 @@
         class="example-item"
         :transition-duration="700"
       >
-      <q-tree
-        v-bind="{ class: { 'text-center': tree.length === 0 } }"
-        no-nodes-label="No files found"
-        class="text-body1"
-        :nodes="tree"
-        node-key="key"
-        :filter="filter"
-        v-model:expanded="expandedTree.value"
-      >
-        <template v-slot:header-folder="prop">
-          <div class="row no-wrap justify-between full-width">
-            <div class="row no-wrap ellipsis line items-center full-width">
-              <q-icon class="q-mr-sm text-blue-8" name="room_service" />
-              <div class="full-width">{{ prop.node.label }}</div>
-            </div>
-            <q-btn
-              flat
-              dense
-              color="primary"
-              icon="edit"
-              @click="editFolder(prop.node)"
-            />
-          </div>
-        </template>
-        <template v-slot:header-file="prop">
-          <div class="row no-wrap justify-between gap-2 full-width">
-            <div
-              class="row no-wrap ellipsis items-center full-width"
-              @click="chooseFile(prop.node)"
-            >
-              <q-icon
-                size="20px"
-                class="q-mr-xs text-blue-8"
-                name="restaurant_menu"
+        <q-tree
+          v-bind="{ class: { 'text-center': tree.length === 0 } }"
+          no-nodes-label="No files found"
+          class="text-body1"
+          :nodes="tree"
+          node-key="key"
+          :filter="filter"
+          v-model:expanded="expandedTree.value"
+        >
+          <template v-slot:header-folder="prop">
+            <div class="row no-wrap justify-between full-width">
+              <div class="row no-wrap ellipsis line items-center full-width">
+                <q-icon class="q-mr-sm text-blue-8" name="room_service" />
+                <div class="full-width">{{ prop.node.label }}</div>
+              </div>
+              <q-btn
+                flat
+                dense
+                color="primary"
+                icon="edit"
+                @click="editFolder(prop.node)"
               />
-              <div class="flex-1">{{ prop.node.label.split('.')[0] }}</div>
             </div>
-            <q-btn
-              flat
-              dense
-              color="primary"
-              icon="edit"
-              @click="editFile(prop.node)"
-            />
-          </div>
-        </template>
-      </q-tree>
+          </template>
+          <template v-slot:header-file="prop">
+            <div class="row no-wrap justify-between gap-2 full-width">
+              <div
+                class="row no-wrap ellipsis items-center full-width"
+                @click="chooseFile(prop.node)"
+              >
+                <q-icon
+                  size="20px"
+                  class="q-mr-xs text-blue-8"
+                  name="restaurant_menu"
+                />
+                <div class="flex-1">{{ prop.node.label.split('.')[0] }}</div>
+              </div>
+              <q-btn
+                flat
+                dense
+                color="primary"
+                icon="edit"
+                @click="editFile(prop.node)"
+              />
+            </div>
+          </template>
+        </q-tree>
       </q-intersection>
       <div v-else>
         <q-skeleton
@@ -105,8 +105,8 @@ const filter = ref('')
 
 const expandedTree = computed({
   get: () => expandedNodes,
-  set: (value: string[]) => setExpanded(value)
-});
+  set: (value: string[]) => setExpanded(value),
+})
 
 const refresh = async (done: () => void) => {
   done()

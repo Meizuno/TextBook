@@ -28,5 +28,4 @@ import 'github-markdown-css/github-markdown.css'
 const { activeNode } = storeToRefs(useNodeStore())
 const pageTitle = inject('pageTitle') as Ref<string>
 pageTitle.value = activeNode.value?.label.split('.')[0] || 'Text Book'
-
 </script>
