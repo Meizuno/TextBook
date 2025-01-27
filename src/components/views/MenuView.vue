@@ -16,9 +16,13 @@
           />
         </template>
       </q-input>
-
-      <q-tree
+      <q-intersection
         v-if="!loadingTree"
+        transition="jump-down"
+        class="example-item"
+        :transition-duration="700"
+      >
+      <q-tree
         v-bind="{ class: { 'text-center': tree.length === 0 } }"
         no-nodes-label="No files found"
         class="text-body1"
@@ -64,6 +68,7 @@
           </div>
         </template>
       </q-tree>
+      </q-intersection>
       <div v-else>
         <q-skeleton
           v-for="_ in tree.length"
