@@ -25,8 +25,8 @@ import { useNodeStore } from 'src/stores/node'
 import { marked } from 'marked'
 import 'github-markdown-css/github-markdown.css'
 
-const pageTitle = inject('pageTitle') as Ref<string>
-pageTitle.value = 'Text Book'
-
 const { activeNode } = storeToRefs(useNodeStore())
+const pageTitle = inject('pageTitle') as Ref<string>
+pageTitle.value = activeNode.value?.label.split('.')[0] || 'Text Book'
+
 </script>
