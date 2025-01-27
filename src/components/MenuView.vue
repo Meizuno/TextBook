@@ -51,7 +51,7 @@
                 class="q-mr-xs text-blue-8"
                 name="restaurant_menu"
               />
-              <div class="flex-1">{{ prop.node.label }}</div>
+              <div class="flex-1">{{ prop.node.label.split('.')[0] }}</div>
             </div>
             <q-btn
               flat

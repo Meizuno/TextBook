@@ -1,10 +1,14 @@
 <template>
-  <div
-    v-if="activeNode"
-    class="q-pa-md markdown-body"
-    style="font-size: 18px"
-    v-html="marked(activeNode.content)"
-  ></div>
+  <div v-if="activeNode" class="q-pa-md markdown-body">
+    <div
+      v-if="activeNode.label.endsWith('.md')"
+      style="font-size: 18px"
+      v-html="marked(activeNode.content)"
+    ></div>
+    <div v-else-if="!activeNode.label.endsWith('.txt')">
+      {{ activeNode?.content }}
+    </div>
+  </div>
   <div
     v-else
     class="absolute-full flex flex-center text-h6 text-zinc-300 dark:text-zinc-600"
