@@ -2,6 +2,7 @@
   <q-pull-to-refresh
     @refresh="refresh"
     :bg-color="q.dark.isActive ? 'dark' : 'white'"
+    class="absolute-full"
   >
     <div class="q-pa-md">
       <q-input dense filled v-model="filter" label="Search" class="q-my-md">
