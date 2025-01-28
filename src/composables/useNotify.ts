@@ -7,6 +7,7 @@ export function useNotify() {
     q.notify({
       color: 'positive',
       icon: 'check_circle',
+      position: 'top-right',
       message: msg,
       actions: [
         { icon: 'close', color: 'white', round: true, handler: () => {} },
@@ -19,6 +20,7 @@ export function useNotify() {
       type: 'ongoing',
       spinner: true,
       message: msg,
+      position: 'top-right',
       timeout: 0,
     })
   }
@@ -28,6 +30,7 @@ export function useNotify() {
       color: 'negative',
       icon: 'error',
       message: msg,
+      position: 'top-right',
       actions: [
         { icon: 'close', color: 'white', round: true, handler: () => {} },
       ],
