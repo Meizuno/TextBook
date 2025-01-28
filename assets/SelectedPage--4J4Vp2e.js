@@ -1,0 +1,1 @@
+import{Q as e}from"./QPage-WnXYADSH.js";import{_ as t}from"./SelectedView.vue_vue_type_script_setup_true_lang-BajAoI-R.js";import{N as a,P as o,$ as r,U as s,T as m}from"./index-3eUfLIpM.js";import"./node-DrT1nSb9.js";import"./github-markdown-BQ9O_dh8.js";const d=a({__name:"SelectedPage",setup(_){return(c,n)=>(o(),r(e,null,{default:s(()=>[m(t)]),_:1}))}});export{d as default};
