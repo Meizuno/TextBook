@@ -2,12 +2,14 @@
   <q-form @submit="onSubmit" class="q-gutter-md q-pa-lg">
     <name-input v-model="selectedNode.label" />
     <path-input v-model="selectedNode.path" :label="selectedNode.label" />
-    <q-btn
-      label="Submit"
-      type="submit"
-      color="primary"
-      class="q-ml-sm float-right"
-    />
+    <div class="flex justify-end">
+      <q-btn
+        label="Submit"
+        type="submit"
+        color="primary"
+        class="q-ml-sm"
+      />
+    </div>
   </q-form>
 </template>
 
