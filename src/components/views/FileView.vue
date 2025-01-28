@@ -27,9 +27,9 @@ import PathInput from 'src/components/form/PathInput.vue'
 import NameInput from 'src/components/form/NameInput.vue'
 import ContentInput from 'src/components/form/ContentInput.vue'
 
-import { useI18n } from 'vue-i18n';
+import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n();
+const { t } = useI18n()
 const { selectedNode } = storeToRefs(useNodeStore())
 const { unselectNode } = useNodeStore()
 const savedSelectedNode = { ...selectedNode.value }

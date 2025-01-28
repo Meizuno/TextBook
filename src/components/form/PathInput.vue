@@ -69,9 +69,9 @@
 import { ref, watch } from 'vue'
 
 import { useNode } from 'src/composables/useNode'
-import { useI18n } from 'vue-i18n';
+import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n();
+const { t } = useI18n()
 
 const path = defineModel({ type: String, required: true })
 const props = defineProps({

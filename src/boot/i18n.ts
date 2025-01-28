@@ -1,6 +1,6 @@
-import { boot } from 'quasar/wrappers';
-import i18n from 'src/i18n';
+import { boot } from 'quasar/wrappers'
+import i18n from 'src/i18n'
 
 export default boot(({ app }) => {
-  app.use(i18n);
-});
+  app.use(i18n)
+})

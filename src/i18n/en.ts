@@ -51,5 +51,5 @@ export default {
     editFolder: 'Edit folder',
     unselect: 'Unselect',
     settings: 'Settings',
-  }
+  },
 }

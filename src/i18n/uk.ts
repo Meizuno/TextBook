@@ -33,7 +33,8 @@ export default {
   },
   dialog: {
     storeURL: 'URL сховища',
-    storeURLMessage: 'Будь ласка, введіть URL сховища вашого сервера з файлами.',
+    storeURLMessage:
+      'Будь ласка, введіть URL сховища вашого сервера з файлами.',
   },
   notify: {
     invalidURL: 'Недійсна URL',
@@ -51,5 +52,5 @@ export default {
     editFolder: 'Редагувати папку',
     unselect: 'Скасувати вибір',
     settings: 'Налаштування',
-  }
-};
+  },
+}

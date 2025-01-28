@@ -25,9 +25,9 @@ import { useNode } from 'src/composables/useNode'
 import { useNotify } from 'src/composables/useNotify'
 import { storeToRefs } from 'pinia'
 
-import { useI18n } from 'vue-i18n';
+import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n();
+const { t } = useI18n()
 const { selectedNode } = storeToRefs(useNodeStore())
 const { unselectNode } = useNodeStore()
 const savedSelectedNode = { ...selectedNode.value }
