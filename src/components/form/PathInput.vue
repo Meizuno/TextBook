@@ -4,7 +4,7 @@
     type="text"
     v-model="path"
     label="Path"
-    @click="dialog = true"
+    @click="openDialog"
     readonly
     hint=""
   />
@@ -92,5 +92,10 @@ const back = () => {
 
 const addPath = (option: string) => {
   path.value = path.value.replace(/\/?$/, '/') + option
+}
+
+const openDialog = () => {
+  options.value = getFolders(path.value, props.label)
+  dialog.value = true
 }
 </script>
