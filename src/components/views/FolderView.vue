@@ -4,7 +4,7 @@
     <path-input v-model="selectedNode.path" :label="selectedNode.label" />
     <div class="flex justify-end">
       <q-btn
-        label="Submit"
+        :label="t('button.submit')"
         type="submit"
         color="primary"
         class="q-ml-sm"
@@ -25,13 +25,16 @@ import { useNode } from 'src/composables/useNode'
 import { useNotify } from 'src/composables/useNotify'
 import { storeToRefs } from 'pinia'
 
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 const { selectedNode } = storeToRefs(useNodeStore())
 const { unselectNode } = useNodeStore()
 const savedSelectedNode = { ...selectedNode.value }
 const isCreated = selectedNode.value.type === 'directory' ? false : true
 
 const pageTitle = inject('pageTitle') as Ref<string>
-pageTitle.value = isCreated ? 'New Folder' : 'Edit Folder'
+pageTitle.value = isCreated ? t('layout.createFolder') : t('layout.editFolder')
 
 const { success } = useNotify()
 const { navigate } = useNavigation()
@@ -48,10 +51,10 @@ const onSubmit = async () => {
       children: [],
       header: '',
     })
-    success('Folder created')
+    success(t('notify.folderCreated'))
   } else {
     await editNode(savedSelectedNode, selectedNode.value)
-    success('Folder updated')
+    success(t('notify.folderUpdated'))
   }
   await navigate('home')
 }

@@ -6,7 +6,7 @@
 
     <div class="flex justify-end">
       <q-btn
-        label="Submit"
+        :label="t('button.submit')"
         type="submit"
         color="primary"
         class="q-ml-sm"
@@ -27,6 +27,9 @@ import PathInput from 'src/components/form/PathInput.vue'
 import NameInput from 'src/components/form/NameInput.vue'
 import ContentInput from 'src/components/form/ContentInput.vue'
 
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 const { selectedNode } = storeToRefs(useNodeStore())
 const { unselectNode } = useNodeStore()
 const savedSelectedNode = { ...selectedNode.value }
@@ -34,7 +37,7 @@ const isCreated = selectedNode.value.type === 'file' ? false : true
 const options = ref<string[]>([])
 
 const pageTitle = inject('pageTitle') as Ref<string>
-pageTitle.value = isCreated ? 'New File' : 'Edit File'
+pageTitle.value = isCreated ? t('layout.createFile') : t('layout.editFile')
 
 const { success } = useNotify()
 const { navigate } = useNavigation()
@@ -50,10 +53,10 @@ onMounted(() => {
 const onSubmit = async () => {
   if (isCreated) {
     await createNode(selectedNode.value)
-    success('File created')
+    success(t('notify.fileCreated'))
   } else {
     await editNode(savedSelectedNode, selectedNode.value)
-    success('File updated')
+    success(t('notify.fileUpdated'))
   }
   await navigate('home')
 }

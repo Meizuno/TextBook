@@ -2,7 +2,9 @@
   <div class="h-full p-4">
     <q-splitter v-model="splitter1" class="h-full shadow-3">
       <template v-slot:before>
-        <div class="layout text-lg text-center py-2 shadow-3 m-2">Navigation</div>
+        <div class="layout text-lg text-center py-2 shadow-3 m-2">
+          {{ t('desktop.navigation') }}
+        </div>
         <menu-view />
       </template>
 
@@ -10,7 +12,7 @@
         <q-splitter v-model="splitter2" class="h-full">
           <template v-slot:before>
             <div class="layout text-lg text-center py-2 shadow-3 mb-2 m-2">
-              Selected file
+              {{ t('desktop.selectedFile') }}
             </div>
             <selected-view class="h-96" />
           </template>
@@ -24,8 +26,8 @@
                   <div>
                     {{
                       selectedNode.type === 'directory'
-                        ? 'Edit folder'
-                        : 'Create folder'
+                        ? t('desktop.editFolder')
+                        : t('desktop.createFolder')
                     }}
                   </div>
                   <q-btn
@@ -33,7 +35,7 @@
                     flat
                     color="primary"
                     @click="unselectNode()"
-                    label="Unselect"
+                    :label="t('desktop.unselect')"
                   />
                 </div>
                 <folder-view />
@@ -47,14 +49,18 @@
                         class="layout text-lg flex justify-between items-center p-2 shadow-3 m-2"
                       >
                         <div>
-                          {{ selectedNode.type === 'file' ? 'Edit file' : 'Create file' }}
+                          {{
+                            selectedNode.type === 'file'
+                              ? t('desktop.editFile')
+                              : t('desktop.createFile')
+                          }}
                         </div>
                         <q-btn
                           :disable="selectedNode === null"
                           flat
                           color="primary"
                           @click="unselectNode()"
-                          label="Unselect"
+                          :label="t('desktop.unselect')"
                         />
                       </div>
                       <file-view />
@@ -62,8 +68,10 @@
                   </template>
 
                   <template v-slot:after>
-                    <div class="layout text-lg text-center py-2 m-2 shadow-3 m-2">
-                      Settings
+                    <div
+                      class="layout text-lg text-center py-2 m-2 shadow-3 m-2"
+                    >
+                      {{ t('desktop.settings') }}
                     </div>
                     <settings-view />
                   </template>
@@ -87,7 +95,9 @@ import FileView from 'src/components/views/FileView.vue'
 import { useNodeStore } from 'src/stores/node'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const { selectedNode } = storeToRefs(useNodeStore())
 const { unselectNode } = useNodeStore()
 

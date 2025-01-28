@@ -1,7 +1,7 @@
 <template>
   <div class="q-px-md q-py-lg">
     <div class="q-mb-lg">
-      <div class="px-2 text-grey-7">Advanced</div>
+      <div class="px-2 text-grey-7">{{ t('settings.advanced') }}</div>
       <q-btn
         class="w-full rounded-lg"
         :disable="!network.connected"
@@ -13,7 +13,7 @@
       >
         <div class="row items-center w-full">
           <div class="flex-1 row justify-start items-center">
-            <div>Store URL</div>
+            <div>{{ t('settings.storeURL') }}</div>
             <q-btn
               @click.stop="handleInnerClick"
               flat
@@ -38,13 +38,13 @@
       </q-btn>
     </div>
     <div>
-      <div class="px-2 text-grey-7">About</div>
+      <div class="px-2 text-grey-7">{{ t('settings.about') }}</div>
       <div
         class="flex flex-col rounded-lg p-2 gap-2"
         :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-1 shadow-3'"
       >
         <div class="flex justify-between px-1">
-          <div>Version</div>
+          <div>{{ t('settings.version') }}</div>
           <div>2.1</div>
         </div>
         <div
@@ -52,7 +52,7 @@
           :class="$q.dark.isActive ? 'bg-grey-7' : 'bg-grey-3'"
         ></div>
         <div class="flex justify-between px-1">
-          <div>License</div>
+          <div>{{ t('settings.license') }}</div>
           <a
             class="no-underline"
             :class="$q.dark.isActive ? 'text-grey-3' : 'text-grey-7'"
@@ -76,9 +76,11 @@ import { storeToRefs } from 'pinia'
 import urlDocs from 'src/assets/url-docs.md?raw'
 import { marked } from 'marked'
 import 'github-markdown-css/github-markdown.css'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const pageTitle = inject('pageTitle') as Ref<string>
-pageTitle.value = 'Settings'
+pageTitle.value = t('layout.settings')
 
 const q = useQuasar()
 const { error } = useNotify()
@@ -105,8 +107,8 @@ const handleInnerClick = async () => {
 
 const addStoreUrl = () => {
   q.dialog({
-    title: 'Store URL',
-    message: 'Please enter the store URL to your server with files.',
+    title: t('dialog.storeURL'),
+    message: t('dialog.storeURLMessage'),
     cancel: true,
     persistent: true,
     prompt: {
@@ -120,7 +122,7 @@ const addStoreUrl = () => {
       })
     } else {
       if (!isValidUrl(data)) {
-        error('Invalid URL!')
+        error(t('notify.invalidURL'))
       } else {
         setStoreUrl(data).catch(() => {
           console.error('Failed to reset storeUrl')

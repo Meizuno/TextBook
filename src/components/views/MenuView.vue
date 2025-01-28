@@ -5,7 +5,13 @@
     class="absolute-full md:relative"
   >
     <div class="q-pa-md">
-      <q-input dense filled v-model="filter" label="Search" class="q-my-md">
+      <q-input
+        dense
+        filled
+        v-model="filter"
+        :label="t('filter.search')"
+        class="q-my-md"
+      >
         <template v-slot:append>
           <q-icon v-if="filter === ''" name="search" />
           <q-icon
@@ -92,6 +98,9 @@ import { useQuasar } from 'quasar'
 import { useNavigation } from 'src/composables/useNavigation'
 import { type TreeNode } from 'src/interface'
 
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
+
 const q = useQuasar()
 const { setActiveNode, setSelectedNode } = useNodeStore()
 const { tree, loadingTree, expandedNodes } = storeToRefs(useTreeStore())
@@ -99,7 +108,7 @@ const { setTree, setExpanded } = useTreeStore()
 const { navigate } = useNavigation()
 
 const pageTitle = inject('pageTitle') as Ref<string>
-pageTitle.value = 'Text Book'
+pageTitle.value = t('layout.main')
 
 const filter = ref('')
 

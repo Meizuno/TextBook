@@ -3,7 +3,7 @@
     filled
     type="text"
     v-model="path"
-    label="Path"
+    :label="t('form.path')"
     @click="openDialog"
     readonly
     hint=""
@@ -21,19 +21,19 @@
         "
         class="flex justify-between"
       >
-        <div class="text-h6">Path</div>
+        <div class="text-h6">{{ t('form.path') }}</div>
         <div>
           <q-btn
             v-if="path !== '/'"
             flat
             :color="$q.dark.isActive ? 'primary' : 'white'"
-            label="Back"
+            :label="t('button.back')"
             @click="back"
           />
           <q-btn
             flat
             :color="$q.dark.isActive ? 'primary' : 'white'"
-            label="OK"
+            :label="t('button.ok')"
             v-close-popup
           />
         </div>
@@ -41,7 +41,7 @@
 
       <q-card-section class="p-4">
         <div v-if="options.length === 0" class="text-center text-grey-7">
-          No folders
+          {{ t('message.noFolders') }}
         </div>
         <q-item
           v-else
@@ -69,6 +69,9 @@
 import { ref, watch } from 'vue'
 
 import { useNode } from 'src/composables/useNode'
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const path = defineModel({ type: String, required: true })
 const props = defineProps({

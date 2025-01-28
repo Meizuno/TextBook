@@ -15,7 +15,7 @@
     class="absolute-full flex flex-center text-h6 text-zinc-300 dark:text-zinc-600"
   >
     <q-icon name="info" />
-    <div class="q-ml-sm">Select a file</div>
+    <div class="q-ml-sm">{{ t('message.selectFile') }}</div>
   </div>
 </template>
 
@@ -25,8 +25,10 @@ import { storeToRefs } from 'pinia'
 import { useNodeStore } from 'src/stores/node'
 import { marked } from 'marked'
 import 'github-markdown-css/github-markdown.css'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const { activeNode } = storeToRefs(useNodeStore())
 const pageTitle = inject('pageTitle') as Ref<string>
-pageTitle.value = activeNode.value?.label.split('.')[0] || 'Text Book'
+pageTitle.value = activeNode.value?.label.split('.')[0] || t('layout.main')
 </script>
