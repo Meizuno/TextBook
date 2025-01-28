@@ -11,4 +11,6 @@ onMounted(async () => {
   const { setTree } = useTreeStore()
   await setTree()
 })
+
+console.log(navigator.language)
 </script>

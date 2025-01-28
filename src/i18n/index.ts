@@ -1,6 +1,6 @@
 import { createI18n } from 'vue-i18n'
 import en from './en'
-import ua from './ua'
+import uk from './uk'
 import cs from './cs'
 
 const userLanguage = navigator.language || navigator.languages[0] || 'en'
@@ -11,7 +11,7 @@ const i18n = createI18n({
   fallbackLocale: 'en',
   messages: {
     en,
-    ua,
+    uk,
     cs,
   },
 })
