@@ -1,1 +1,0 @@
-import{Q as e}from"./QPage-WnXYADSH.js";import{_ as a}from"./MenuView.vue_vue_type_script_setup_true_lang-BUzSW8gU.js";import{N as t,P as o,$ as r,U as s,T as m}from"./index-3eUfLIpM.js";import"./node-DrT1nSb9.js";import"./useNavigation-DXLFP8Sp.js";const d=t({__name:"MenuPage",setup(n){return(_,p)=>(o(),r(e,null,{default:s(()=>[m(a)]),_:1}))}});export{d as default};
