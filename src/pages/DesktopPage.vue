@@ -1,71 +1,79 @@
 <template>
-  <div class="max-w-[1440px] h-full mx-auto p-8 overflow-hidden box-border">
-    <div class="flex shadow-3 h-full overflow-hidden box-border w-full">
-      <div class="flex-1 overflow-auto">
-        <div class="layout text-lg text-center py-2 m-2 shadow-3">
-          Navigation
-        </div>
-        <menu-view class="h-96" />
-      </div>
-      <div class="w-0.5 h-full dark:bg-gray-800 bg-gray-300 rounded"></div>
-      <div class="flex-1 overflow-auto">
-        <div class="layout text-lg text-center py-2 m-2 shadow-3 mb-2">
-          Selected file
-        </div>
-        <selected-view class="h-96" />
-      </div>
-      <div class="w-0.5 h-full dark:bg-gray-800 bg-gray-300 rounded"></div>
-      <div class="flex-1 overflow-auto w-full h-full">
-        <div class="flex flex-col no-wrap">
-          <div class="h-1/3 overflow-auto">
-            <div
-              class="layout text-lg flex justify-between items-center p-2 m-2 shadow-3 mb-2"
-            >
-              <div>
-                {{
-                  selectedNode.type === 'directory'
-                    ? 'Edit folder'
-                    : 'Create folder'
-                }}
-              </div>
-              <q-btn
-                :disable="selectedNode === null"
-                flat
-                color="primary"
-                @click="unselectNode()"
-                label="Unselect"
-              />
+  <div class="h-full p-4">
+    <q-splitter v-model="splitter1" class="h-full shadow-3">
+      <template v-slot:before>
+        <div class="layout text-lg text-center py-2 shadow-3 m-2">Navigation</div>
+        <menu-view />
+      </template>
+
+      <template v-slot:after>
+        <q-splitter v-model="splitter2" class="h-full">
+          <template v-slot:before>
+            <div class="layout text-lg text-center py-2 shadow-3 mb-2 m-2">
+              Selected file
             </div>
-            <folder-view />
-          </div>
-          <div class="w-full h-0.5 dark:bg-gray-800 bg-gray-300 rounded"></div>
-          <div class="h-1/3 overflow-auto">
-            <div
-              class="layout text-lg flex justify-between items-center p-2 m-2 shadow-3 mb-2"
-            >
-              <div>
-                {{ selectedNode.type === 'file' ? 'Edit file' : 'Create file' }}
-              </div>
-              <q-btn
-                :disable="selectedNode === null"
-                flat
-                color="primary"
-                @click="unselectNode()"
-                label="Unselect"
-              />
-            </div>
-            <file-view />
-          </div>
-          <div class="w-full h-0.5 dark:bg-gray-800 bg-gray-300 rounded"></div>
-          <div class="h-1/3 overflow-auto">
-            <div class="layout text-lg text-center py-2 m-2 shadow-3 mb-2">
-              Settings
-            </div>
-            <settings-view />
-          </div>
-        </div>
-      </div>
-    </div>
+            <selected-view class="h-96" />
+          </template>
+
+          <template v-slot:after>
+            <q-splitter v-model="splitter3" horizontal class="h-full">
+              <template v-slot:before>
+                <div
+                  class="layout text-lg flex justify-between items-center p-2 shadow-3 m-2"
+                >
+                  <div>
+                    {{
+                      selectedNode.type === 'directory'
+                        ? 'Edit folder'
+                        : 'Create folder'
+                    }}
+                  </div>
+                  <q-btn
+                    :disable="selectedNode === null"
+                    flat
+                    color="primary"
+                    @click="unselectNode()"
+                    label="Unselect"
+                  />
+                </div>
+                <folder-view />
+              </template>
+
+              <template v-slot:after>
+                <q-splitter v-model="splitter4" horizontal>
+                  <template v-slot:before>
+                    <div>
+                      <div
+                        class="layout text-lg flex justify-between items-center p-2 shadow-3 m-2"
+                      >
+                        <div>
+                          {{ selectedNode.type === 'file' ? 'Edit file' : 'Create file' }}
+                        </div>
+                        <q-btn
+                          :disable="selectedNode === null"
+                          flat
+                          color="primary"
+                          @click="unselectNode()"
+                          label="Unselect"
+                        />
+                      </div>
+                      <file-view />
+                    </div>
+                  </template>
+
+                  <template v-slot:after>
+                    <div class="layout text-lg text-center py-2 m-2 shadow-3 m-2">
+                      Settings
+                    </div>
+                    <settings-view />
+                  </template>
+                </q-splitter>
+              </template>
+            </q-splitter>
+          </template>
+        </q-splitter>
+      </template>
+    </q-splitter>
   </div>
 </template>
 
@@ -78,7 +86,13 @@ import FileView from 'src/components/views/FileView.vue'
 
 import { useNodeStore } from 'src/stores/node'
 import { storeToRefs } from 'pinia'
+import { ref } from 'vue'
 
 const { selectedNode } = storeToRefs(useNodeStore())
 const { unselectNode } = useNodeStore()
+
+const splitter1 = ref(30)
+const splitter2 = ref(60)
+const splitter3 = ref(33)
+const splitter4 = ref(55)
 </script>

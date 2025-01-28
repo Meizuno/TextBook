@@ -20,7 +20,7 @@
     </q-page-container>
 
     <!-- Render if desktop -->
-    <q-page-container v-else class="h-screen overflow-hidden">
+    <q-page-container v-else class="absolute-full">
       <desktop-page />
     </q-page-container>
 
