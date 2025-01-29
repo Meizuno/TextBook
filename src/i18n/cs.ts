@@ -5,7 +5,7 @@ export default {
     content: 'Obsah',
   },
   message: {
-    noFolders: 'Žádné složky',
+    moveHere: 'Přesunout sem',
     selectFile: 'Vyberte soubor',
   },
   button: {

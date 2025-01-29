@@ -12,5 +12,4 @@ onMounted(async () => {
   await setTree()
 })
 
-console.log(navigator.language)
 </script>

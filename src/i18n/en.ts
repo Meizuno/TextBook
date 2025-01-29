@@ -5,7 +5,7 @@ export default {
     content: 'Content',
   },
   message: {
-    noFolders: 'No folders',
+    moveHere: 'Move here',
     selectFile: 'Select file',
   },
   button: {

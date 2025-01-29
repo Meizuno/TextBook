@@ -5,7 +5,7 @@ export default {
     content: 'Вміст',
   },
   message: {
-    noFolders: 'Немає папок',
+    moveHere: 'Перемістити сюди',
     selectFile: 'Виберіть файл',
   },
   button: {

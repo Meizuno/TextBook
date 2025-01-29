@@ -9,19 +9,19 @@
     hint=""
   />
   <q-dialog v-model="dialog">
-    <q-card
-      :class="[
-        $q.dark.isActive ? 'bg-dark text-white' : 'bg-white text-dark',
-        'w-80 shadow-lg rounded-md',
-      ]"
+  <q-card
+    :class="[
+      $q.dark.isActive ? 'bg-dark text-white' : 'bg-white text-dark',
+      'w-80 shadow-lg rounded-md h-[300px] flex flex-col',
+    ]"
+  >
+    <q-card-section
+      :class="
+        $q.dark.isActive ? 'bg-grey-9 text-white' : 'bg-primary text-white'
+      "
+      class="flex justify-between"
     >
-      <q-card-section
-        :class="
-          $q.dark.isActive ? 'bg-grey-9 text-white' : 'bg-primary text-white'
-        "
-        class="flex justify-between"
-      >
-        <div class="text-h6">{{ t('form.path') }}</div>
+      <div class="text-h6">{{ t('form.path') }}</div>
         <div>
           <q-btn
             v-if="path !== '/'"
@@ -39,30 +39,36 @@
         </div>
       </q-card-section>
 
-      <q-card-section class="p-4">
-        <div v-if="options.length === 0" class="text-center text-grey-7">
-          {{ t('message.noFolders') }}
+      <q-card-section class="p-4 flex-1 overflow-auto">
+        <div v-if="options.length === 0" class="h-full flex flex-center text-grey-7">
+          {{ t('message.moveHere') }}
         </div>
-        <q-item
+        <q-intersection
           v-else
-          v-for="option in options"
-          :key="option"
-          clickable
-          v-ripple
-          :class="[
-            $q.dark.isActive ? 'hover:bg-grey-7' : 'hover:bg-grey-2',
-            'rounded-md',
-          ]"
-          @click="addPath(option)"
+          :transition="transitionSide"
+          :transition-duration="700"
+          :key="options.length"
         >
-          <q-icon color="primary" name="folder" size="md" class="q-mr-sm" />
-          <q-item-section>{{ option }}</q-item-section>
-        </q-item>
+          <q-item
+            v-for="option in options"
+            :key="option"
+            clickable
+            v-ripple
+            :class="[
+              $q.dark.isActive ? 'hover:bg-grey-7' : 'hover:bg-grey-2',
+              'rounded-md',
+            ]"
+            @click="addPath(option)"
+          >
+            <q-icon color="primary" name="folder" size="md" class="q-mr-sm" />
+            <q-item-section>{{ option }}</q-item-section>
+          </q-item>
+        </q-intersection>
       </q-card-section>
+    <q-separator />
+  </q-card>
+</q-dialog>
 
-      <q-separator />
-    </q-card>
-  </q-dialog>
 </template>
 
 <script setup lang="ts">
@@ -84,16 +90,19 @@ const props = defineProps({
 const { getFolders } = useNode()
 const options = ref<string[]>(getFolders(path.value, props.label))
 const dialog = ref(false)
+const transitionSide = ref('slide-left')
 
 watch(path, () => {
   options.value = getFolders(path.value, props.label)
 })
 
 const back = () => {
+  transitionSide.value = 'slide-right'
   path.value = path.value.split('/').slice(0, -1).join('/') || '/'
 }
 
 const addPath = (option: string) => {
+  transitionSide.value = 'slide-left'
   path.value = path.value.replace(/\/?$/, '/') + option
 }
 
