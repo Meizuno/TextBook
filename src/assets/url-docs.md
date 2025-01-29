@@ -66,30 +66,6 @@
     null
     ```
 
-- Delete item
-
-  ```
-  DELETE /item
-  ```
-
-  - with body
-
-    ```ts
-    {
-      label: string;
-      path: string;
-      children?: TreeNode[] | null;
-      content: string;
-      type: string = 'file' | "directory";
-    }
-    ```
-
-  - with response data
-
-    ```ts
-    null
-    ```
-
 ### Schema
 
 ```typescript

@@ -100,7 +100,7 @@ const isValidUrl = (url: string) => {
 const handleInnerClick = async () => {
   q.dialog({
     message: await marked(urlDocs),
-    class: 'markdown-body',
+    class: 'markdown-body h-[70%]',
     html: true,
   })
 }
@@ -112,7 +112,7 @@ const addStoreUrl = () => {
     cancel: true,
     persistent: true,
     prompt: {
-      model: '',
+      model: storeUrl.value,
       type: 'text',
     },
   }).onOk((data) => {
