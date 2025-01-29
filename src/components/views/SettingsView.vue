@@ -100,7 +100,7 @@ const isValidUrl = (url: string) => {
 const handleInnerClick = async () => {
   q.dialog({
     message: await marked(urlDocs),
-    class: 'markdown-body h-[70%]',
+    class: 'markdown-body h-[70%] w-fit',
     html: true,
   })
 }
