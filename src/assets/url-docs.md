@@ -9,6 +9,30 @@
   - with parameters **`null`**
   - with response data **`TreeNode[]`**
 
+- Upload items
+
+  ```
+  POST /
+  ```
+
+  - with body
+
+    ```ts
+    {
+      label: string;
+      path: string;
+      children: TreeNode[];
+      content: string;
+      type: string = 'file' | "directory";
+    }
+    ```
+  
+  - with response
+
+    ```ts
+    null
+    ```
+
 - Create item
 
   ```
