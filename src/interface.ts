@@ -4,6 +4,6 @@ export interface TreeNode {
   path: string
   type: string
   content: string
-  children?: TreeNode[]
+  children: TreeNode[]
   header: string
 }

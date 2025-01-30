@@ -1,12 +1,18 @@
-import { defineStore, acceptHMRUpdate } from 'pinia'
+import { defineStore, acceptHMRUpdate, storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import { api } from 'src/boot/axios'
 import { type TreeNode } from 'src/interface'
+import { useNetworkStore } from './network'
+import { useSettingsStore } from 'src/stores/settings'
+import { LocalStorage } from 'quasar'
 
 export const useTreeStore = defineStore('tree', () => {
   const tree = ref<TreeNode[]>([])
   const loadingTree = ref(false)
   const expandedNodes = ref<string[]>([])
+
+  const { getStatus } = useNetworkStore()
+  const { storeUrl } = storeToRefs(useSettingsStore())
 
   const delay = async (ms: number) =>
     await new Promise((resolve) => setTimeout(resolve, ms))
@@ -14,8 +20,17 @@ export const useTreeStore = defineStore('tree', () => {
   const setTree = async (ms?: number) => {
     loadingTree.value = true
     if (ms) await delay(ms)
-    const { data } = await api.get('/')
-    tree.value = await Promise.all(data.map(extendNode))
+
+    const network = await getStatus()
+    if (network.connected && storeUrl.value) {
+      const { data } = await api.get('/')
+      tree.value = await Promise.all(data.map(extendNode))
+    } else {
+      tree.value = LocalStorage.getItem('tree')
+        ? JSON.parse(LocalStorage.getItem('tree') as string)
+        : []
+    }
+
     loadingTree.value = false
   }
 

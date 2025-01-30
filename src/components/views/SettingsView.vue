@@ -86,7 +86,8 @@ const q = useQuasar()
 const { error } = useNotify()
 const { storeUrl } = storeToRefs(useSettingsStore())
 const { setStoreUrl } = useSettingsStore()
-const { network } = storeToRefs(useNetworkStore())
+const { getStatus } = useNetworkStore()
+const network = await getStatus()
 
 const isValidUrl = (url: string) => {
   try {

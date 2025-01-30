@@ -21,7 +21,7 @@
     {
       label: string;
       path: string;
-      children?: TreeNode[] | null;
+      children: TreeNode[];
       content: string;
       type: string = 'file' | "directory";
     }
@@ -46,14 +46,14 @@
       "old_item": {
         label: string;
         path: string;
-        children?: TreeNode[] | null;
+        children: TreeNode[];
         content: string;
         type: string = 'file' | "directory";
       },
       "new_item": {
         label: string;
         path: string;
-        children?: TreeNode[] | null;
+        children: TreeNode[];
         content: string;
         type: string = 'file' | "directory";
       }
@@ -72,7 +72,7 @@
 interface UploadNode {
     label: string;
     path: string;
-    children?: UploadNode[] | null;
+    children: UploadNode[];
     content: string;
     type: string = 'file' | "directory";
 }
