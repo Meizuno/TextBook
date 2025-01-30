@@ -2,14 +2,9 @@
   <div class="q-px-md q-py-lg">
     <div class="q-mb-lg">
       <div class="px-2 text-grey-7">{{ t('settings.advanced') }}</div>
-      <q-btn
-        class="w-full rounded-lg"
-        :disable="!network.connected"
-        :color="$q.dark.isActive ? 'grey-9' : 'grey-1'"
-        :text-color="$q.dark.isActive ? 'grey-1' : 'grey-9'"
-        padding="sm"
-        no-caps
-        @click="addStoreUrl"
+      <div
+        class="flex flex-col rounded-lg p-2 gap-2"
+        :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-1 shadow-3'"
       >
         <div class="row items-center w-full">
           <div class="flex-1 row justify-start items-center">
@@ -27,15 +22,40 @@
           <q-banner
             dense
             rounded
-            class="flex-1 text-left p-1"
-            :class="$q.dark.isActive ? 'bg-dark' : 'bg-grey-3'"
+            class="flex-1 text-left py-1 px-2"
+            :class="$q.dark.isActive ? 'bg-dark' : 'bg-grey-4'"
+            @click="addStoreUrl"
           >
             <div class="text-ellipsis overflow-x-hidden">
               {{ storeUrl }}
             </div>
           </q-banner>
         </div>
-      </q-btn>
+        <div
+          class="h-0.5"
+          :class="$q.dark.isActive ? 'bg-grey-7' : 'bg-grey-3'"
+        ></div>
+        <div class="flex gap-2">
+          <q-btn
+            padding="none"
+            outline
+            :color="$q.dark.isActive ? 'grey-5' : 'grey-8'"
+            class="flex-1"
+            @click="downloadTree"
+          >
+            {{ t('settings.download') }}
+          </q-btn>
+          <q-btn
+            padding="none"
+            outline
+            :color="$q.dark.isActive ? 'grey-5' : 'grey-8'"
+            class="flex-1"
+            @click="uploadTree"
+          >
+            {{ t('settings.upload') }}
+          </q-btn>
+        </div>
+      </div>
     </div>
     <div>
       <div class="px-2 text-grey-7">{{ t('settings.about') }}</div>
@@ -70,9 +90,9 @@
 import { inject, type Ref } from 'vue'
 import { useQuasar } from 'quasar'
 import { useSettingsStore } from 'src/stores/settings'
-import { useNetworkStore } from 'src/stores/network'
 import { useNotify } from 'src/composables/useNotify'
 import { storeToRefs } from 'pinia'
+import { useTreeStore } from 'src/stores/tree'
 import urlDocs from 'src/assets/url-docs.md?raw'
 import { marked } from 'marked'
 import 'github-markdown-css/github-markdown.css'
@@ -86,8 +106,7 @@ const q = useQuasar()
 const { error } = useNotify()
 const { storeUrl } = storeToRefs(useSettingsStore())
 const { setStoreUrl } = useSettingsStore()
-const { getStatus } = useNetworkStore()
-const network = await getStatus()
+const { setTree, keepTree } = useTreeStore()
 
 const isValidUrl = (url: string) => {
   try {
@@ -118,18 +137,40 @@ const addStoreUrl = () => {
     },
   }).onOk((data) => {
     if (!data) {
-      setStoreUrl('').catch(() => {
-        console.error('Failed to reset storeUrl')
-      })
+      setStoreUrl('')
     } else {
       if (!isValidUrl(data)) {
         error(t('notify.invalidURL'))
       } else {
-        setStoreUrl(data).catch(() => {
-          console.error('Failed to reset storeUrl')
-        })
+        setStoreUrl(data)
       }
     }
+  })
+}
+
+const downloadTree = () => {
+  q.dialog({
+    title: t('dialog.download'),
+    message: t('dialog.downloadMessage'),
+    cancel: true,
+    persistent: true,
+  }).onOk(() => {
+    setTree().catch(() => {
+      console.error('Failed to download tree')
+    })
+  })
+}
+
+const uploadTree = () => {
+  q.dialog({
+    title: t('dialog.upload'),
+    message: t('dialog.uploadMessage'),
+    cancel: true,
+    persistent: true,
+  }).onOk(() => {
+    keepTree().catch(() => {
+      console.error('Failed to upload tree')
+    })
   })
 }
 </script>

@@ -30,10 +30,18 @@ export default {
     about: 'O aplikaci',
     version: 'Verze',
     license: 'Licence',
+    download: 'Stáhnout',
+    upload: 'Nahrát',
   },
   dialog: {
     storeURL: 'URL úložiště',
     storeURLMessage: 'Zadejte prosím URL úložiště vašeho serveru se soubory.',
+    download: 'Stáhnout soubory',
+    downloadMessage:
+      'Opravdu chcete stáhnout soubory? Tím budou smazány místní soubory.',
+    upload: 'Nahrát soubory',
+    uploadMessage:
+      'Opravdu chcete nahrát soubory? Tím budou smazány soubory na serveru.',
   },
   notify: {
     invalidURL: 'Neplatná URL',

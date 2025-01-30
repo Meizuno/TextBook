@@ -34,6 +34,17 @@ export const useTreeStore = defineStore('tree', () => {
     loadingTree.value = false
   }
 
+  const keepTree = async () => {
+    const network = await getStatus()
+    if (network.connected && storeUrl.value) {
+      await api.post('/', tree.value)
+    } else {
+      tree.value = LocalStorage.getItem('tree')
+        ? JSON.parse(LocalStorage.getItem('tree') as string)
+        : []
+    }
+  }
+
   const extendNode = async (node: TreeNode): Promise<TreeNode> => {
     const isDir = node.type === 'directory'
     return {
@@ -58,6 +69,7 @@ export const useTreeStore = defineStore('tree', () => {
     loadingTree,
     expandedNodes,
     setTree,
+    keepTree,
     setExpanded,
   }
 })

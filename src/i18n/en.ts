@@ -30,10 +30,18 @@ export default {
     about: 'About',
     version: 'Version',
     license: 'License',
+    download: 'Download',
+    upload: 'Upload',
   },
   dialog: {
     storeURL: 'Store URL',
     storeURLMessage: 'Please enter the store URL to your server with files.',
+    download: 'Download files',
+    downloadMessage:
+      'Are you sure you want to download files? It will delete the local files.',
+    upload: 'Upload files',
+    uploadMessage:
+      'Are you sure you want to upload files? It will delete the server files.',
   },
   notify: {
     invalidURL: 'Invalid URL',
