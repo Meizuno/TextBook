@@ -4,6 +4,7 @@ import { db, type TreeNode } from 'src/db'
 import { useTreeStore } from 'src/stores/tree'
 import { useNetworkStore } from 'src/stores/network'
 import { useSettingsStore } from 'src/stores/settings'
+import { toRaw } from 'vue'
 
 export function useNode() {
   const { buildTree } = useTreeStore()
@@ -32,8 +33,18 @@ export function useNode() {
     await db.treeNode.add(newNode)
   }
 
-  const deleteNode = async (oldNode: TreeNode) => {
-    await db.treeNode.delete(oldNode.id)
+  const updateNode = async (oldNode: TreeNode, newNode: TreeNode) => {
+    await db.treeNode.update(oldNode.id, toRaw(newNode))
+
+    const oldPathPrefix = oldNode.path + '/' + oldNode.label;
+    const newPathPrefix = newNode.path + '/' + newNode.label;
+
+    await db.treeNode
+      .where('path')
+      .startsWith(oldPathPrefix)
+      .modify((child) => {
+        child.path = child.path.replace(oldPathPrefix, newPathPrefix);
+      });
   }
 
   const editNode = async (oldNode: TreeNode, newNode: TreeNode) => {
@@ -59,25 +70,13 @@ export function useNode() {
       })
     }
 
-    await deleteNode(oldNode)
-    await addNode(newNode)
+    await updateNode(oldNode, newNode)
     await buildTree()
   }
 
-  const getFolders = (path: string, name: string) => {
-    const result: string[] = []
-    const traverse = (nodes: TreeNode[]) => {
-      for (const node of nodes) {
-        if (node.path === path) {
-          if (node.type === 'directory' && node.label !== name)
-            result.push(node.label)
-        }
-      }
-    }
-
-    const { tree } = useTreeStore()
-    traverse(tree)
-    return result
+  const getFolders = async (path: string) => {
+    const nodes = await db.treeNode.where('path').equals(path).toArray()
+    return nodes.map((node) => node.label)
   }
 
   return { createNode, editNode, getFolders }

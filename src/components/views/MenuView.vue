@@ -104,7 +104,7 @@ const { t } = useI18n()
 const q = useQuasar()
 const { setActiveNode, setSelectedNode } = useNodeStore()
 const { tree, loadingTree, expandedNodes } = storeToRefs(useTreeStore())
-const { setTree, setExpanded } = useTreeStore()
+const { downloadTree, setExpanded } = useTreeStore()
 const { navigate } = useNavigation()
 
 const pageTitle = inject('pageTitle') as Ref<string>
@@ -119,7 +119,7 @@ const expandedTree = computed({
 
 const refresh = async (done: () => void) => {
   done()
-  await setTree(1000)
+  await downloadTree(1000)
 }
 
 const chooseFile = async (node: TreeNode) => {

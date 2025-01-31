@@ -41,7 +41,7 @@
             outline
             :color="$q.dark.isActive ? 'grey-5' : 'grey-8'"
             class="flex-1"
-            @click="downloadTree"
+            @click="getFromServer"
           >
             {{ t('settings.download') }}
           </q-btn>
@@ -50,7 +50,7 @@
             outline
             :color="$q.dark.isActive ? 'grey-5' : 'grey-8'"
             class="flex-1"
-            @click="uploadTree"
+            @click="setToServer"
           >
             {{ t('settings.upload') }}
           </q-btn>
@@ -106,7 +106,7 @@ const q = useQuasar()
 const { error } = useNotify()
 const { storeUrl } = storeToRefs(useSettingsStore())
 const { setStoreUrl } = useSettingsStore()
-const { setTree, keepTree } = useTreeStore()
+const { downloadTree, uploadTree } = useTreeStore()
 
 const isValidUrl = (url: string) => {
   try {
@@ -148,27 +148,27 @@ const addStoreUrl = () => {
   })
 }
 
-const downloadTree = () => {
+const getFromServer = () => {
   q.dialog({
     title: t('dialog.download'),
     message: t('dialog.downloadMessage'),
     cancel: true,
     persistent: true,
   }).onOk(() => {
-    setTree().catch(() => {
+    downloadTree().catch(() => {
       console.error('Failed to download tree')
     })
   })
 }
 
-const uploadTree = () => {
+const setToServer = () => {
   q.dialog({
     title: t('dialog.upload'),
     message: t('dialog.uploadMessage'),
     cancel: true,
     persistent: true,
   }).onOk(() => {
-    keepTree().catch(() => {
+    uploadTree().catch(() => {
       console.error('Failed to upload tree')
     })
   })

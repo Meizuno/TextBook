@@ -6,7 +6,7 @@ import { LocalStorage } from 'quasar'
 export const useNodeStore = defineStore('node', () => {
   const selectedNode = ref<TreeNode>({
     label: '',
-    path: '/',
+    path: '',
     content: '',
     type: '',
   })
@@ -29,7 +29,7 @@ export const useNodeStore = defineStore('node', () => {
   const unselectNode = () => {
     selectedNode.value = {
       label: '',
-      path: '/',
+      path: '',
       content: '',
       type: '',
     }

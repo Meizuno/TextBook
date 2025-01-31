@@ -1,7 +1,7 @@
 <template>
   <q-form @submit="onSubmit" class="q-gutter-md q-pa-lg">
     <name-input v-model="selectedNode.label" />
-    <path-input v-model="selectedNode.path" :label="selectedNode.label" />
+    <path-input v-model="selectedNode.path" />
     <content-input v-model="selectedNode.content" />
 
     <div class="flex justify-end">
@@ -43,8 +43,8 @@ const { success } = useNotify()
 const { navigate } = useNavigation()
 const { createNode, editNode, getFolders } = useNode()
 
-onMounted(() => {
-  options.value = getFolders(selectedNode.value.path, selectedNode.value.label)
+onMounted(async () => {
+  options.value = await getFolders(selectedNode.value.path)
   if (selectedNode.value.path !== '/') {
     options.value = ['..', ...options.value]
   }

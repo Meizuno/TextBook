@@ -5,7 +5,6 @@ import { db, type TreeNode, type QTreeNode } from 'src/db'
 import { useNetworkStore } from './network'
 import { useSettingsStore } from 'src/stores/settings'
 
-
 export const useTreeStore = defineStore('tree', () => {
   const tree = ref<QTreeNode[]>([])
   const loadingTree = ref(false)
@@ -17,38 +16,48 @@ export const useTreeStore = defineStore('tree', () => {
   const delay = async (ms: number) =>
     await new Promise((resolve) => setTimeout(resolve, ms))
 
-  const setTree = async (ms?: number) => {
-    loadingTree.value = true
-    if (ms) await delay(ms)
-
-    const network = await getStatus()
-    if (network.connected && storeUrl.value) {
-      const { data } = await api.get('/')
-      tree.value = await Promise.all(data.map(extendNode))
-    }
-
-    loadingTree.value = false
-  }
-
   const buildTree = async () => {
     const result: QTreeNode[] = []
     const nodes = await db.treeNode.toArray()
-    nodes.sort((a, b) => {
-      if (a.path < b.path) return -1;
-      if (a.path > b.path) return 1;
-    
-      if (a.label < b.label) return -1;
-      if (a.label > b.label) return 1;
-    
-      return 0;
-    });
 
-    nodes.forEach((node) => {
-      result.push(extendNode(node))
+    // Sort nodes
+    nodes.sort((a, b) => {
+      if (a.label < b.label) return -1
+      if (a.label > b.label) return 1
+
+      if (a.path < b.path) return -1
+      if (a.path > b.path) return 1
+
+      return 0
     })
 
+    // Define root nodes
+    nodes.forEach((node) => {
+      if (node.path === '') {
+        result.push(extendNode(node))
+      }
+    })
+
+    // Define child nodes using DFS
+    const dfs = async (parent: QTreeNode) => {
+      const children = await db.treeNode
+        .where('path')
+        .equals(parent.path + '/' + parent.label)
+        .toArray()
+
+      for (const child of children) {
+        const extendedChild = extendNode(child)
+        parent.children.push(extendedChild)
+        await dfs(extendedChild)
+      }
+    }
+
+    for (const parent of result) {
+      await dfs(parent)
+    }
+
     tree.value = result
-  };
+  }
 
   const extendNode = (node: TreeNode) => {
     return {
@@ -58,9 +67,28 @@ export const useTreeStore = defineStore('tree', () => {
     }
   }
 
-  const keepTree = async () => {
+  const downloadTree = async (ms?: number) => {
+    loadingTree.value = true
     const network = await getStatus()
     if (network.connected && storeUrl.value) {
+      const { data } = await api.get('/')
+
+      await db.treeNode.clear();
+
+      for (const node of data) {
+        await db.treeNode.add(node)
+      }
+    }
+
+    if (ms) await delay(ms)
+    await buildTree()
+    loadingTree.value = false
+  }
+
+  const uploadTree = async () => {
+    const network = await getStatus()
+    if (network.connected && storeUrl.value) {
+      await buildTree()
       await api.post('/', tree.value)
     }
   }
@@ -73,9 +101,9 @@ export const useTreeStore = defineStore('tree', () => {
     tree,
     loadingTree,
     expandedNodes,
-    setTree,
     buildTree,
-    keepTree,
+    downloadTree,
+    uploadTree,
     setExpanded,
   }
 })

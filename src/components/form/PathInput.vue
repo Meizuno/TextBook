@@ -80,25 +80,19 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 const path = defineModel({ type: String, required: true })
-const props = defineProps({
-  label: {
-    type: String,
-    required: true,
-  },
-})
 
 const { getFolders } = useNode()
-const options = ref<string[]>(getFolders(path.value, props.label))
+const options = ref<string[]>([])
 const dialog = ref(false)
 const transitionSide = ref('slide-left')
 
-watch(path, () => {
-  options.value = getFolders(path.value, props.label)
+watch(path, async () => {
+  options.value = await getFolders(path.value)
 })
 
 const back = () => {
   transitionSide.value = 'slide-right'
-  path.value = path.value.split('/').slice(0, -1).join('/') || '/'
+  path.value = path.value.split('/').slice(0, -1).join('/') || ''
 }
 
 const addPath = (option: string) => {
@@ -106,8 +100,8 @@ const addPath = (option: string) => {
   path.value = path.value.replace(/\/?$/, '/') + option
 }
 
-const openDialog = () => {
-  options.value = getFolders(path.value, props.label)
+const openDialog = async () => {
+  options.value = await getFolders(path.value)
   dialog.value = true
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <q-form @submit="onSubmit" class="q-gutter-md q-pa-lg">
     <name-input v-model="selectedNode.label" />
-    <path-input v-model="selectedNode.path" :label="selectedNode.label" />
+    <path-input v-model="selectedNode.path" />
     <div class="flex justify-end">
       <q-btn
         :label="t('button.submit')"
