@@ -43,13 +43,10 @@ const { createNode, editNode } = useNode()
 const onSubmit = async () => {
   if (isCreated) {
     await createNode({
-      key: selectedNode.value.key,
       label: selectedNode.value.label,
       path: selectedNode.value.path,
       type: 'directory',
       content: '',
-      children: [],
-      header: '',
     })
     success(t('notify.folderCreated'))
   } else {

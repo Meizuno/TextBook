@@ -33,7 +33,7 @@
           no-nodes-label="No files found"
           class="text-body1"
           :nodes="tree"
-          node-key="key"
+          node-key="id"
           :filter="filter"
           v-model:expanded="expandedTree.value"
         >
@@ -96,7 +96,7 @@ import { useTreeStore } from 'src/stores/tree'
 import { storeToRefs } from 'pinia'
 import { useQuasar } from 'quasar'
 import { useNavigation } from 'src/composables/useNavigation'
-import { type TreeNode } from 'src/interface'
+import { type TreeNode } from 'src/db'
 
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()

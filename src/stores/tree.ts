@@ -1,13 +1,13 @@
 import { defineStore, acceptHMRUpdate, storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import { api } from 'src/boot/axios'
-import { type TreeNode } from 'src/interface'
+import { db, type TreeNode, type QTreeNode } from 'src/db'
 import { useNetworkStore } from './network'
 import { useSettingsStore } from 'src/stores/settings'
-import { LocalStorage } from 'quasar'
+
 
 export const useTreeStore = defineStore('tree', () => {
-  const tree = ref<TreeNode[]>([])
+  const tree = ref<QTreeNode[]>([])
   const loadingTree = ref(false)
   const expandedNodes = ref<string[]>([])
 
@@ -25,38 +25,43 @@ export const useTreeStore = defineStore('tree', () => {
     if (network.connected && storeUrl.value) {
       const { data } = await api.get('/')
       tree.value = await Promise.all(data.map(extendNode))
-    } else {
-      tree.value = LocalStorage.getItem('tree')
-        ? JSON.parse(LocalStorage.getItem('tree') as string)
-        : []
     }
 
     loadingTree.value = false
+  }
+
+  const buildTree = async () => {
+    const result: QTreeNode[] = []
+    const nodes = await db.treeNode.toArray()
+    nodes.sort((a, b) => {
+      if (a.path < b.path) return -1;
+      if (a.path > b.path) return 1;
+    
+      if (a.label < b.label) return -1;
+      if (a.label > b.label) return 1;
+    
+      return 0;
+    });
+
+    nodes.forEach((node) => {
+      result.push(extendNode(node))
+    })
+
+    tree.value = result
+  };
+
+  const extendNode = (node: TreeNode) => {
+    return {
+      ...node,
+      header: node.type === 'directory' ? 'folder' : 'file',
+      children: [],
+    }
   }
 
   const keepTree = async () => {
     const network = await getStatus()
     if (network.connected && storeUrl.value) {
       await api.post('/', tree.value)
-    } else {
-      tree.value = LocalStorage.getItem('tree')
-        ? JSON.parse(LocalStorage.getItem('tree') as string)
-        : []
-    }
-  }
-
-  const extendNode = async (node: TreeNode): Promise<TreeNode> => {
-    const isDir = node.type === 'directory'
-    return {
-      key: node.path + node.label,
-      path: node.path,
-      content: node.content,
-      children: node.children
-        ? await Promise.all(node.children.map(extendNode))
-        : [],
-      label: node.label,
-      type: node.type,
-      header: isDir ? 'folder' : 'file',
     }
   }
 
@@ -69,6 +74,7 @@ export const useTreeStore = defineStore('tree', () => {
     loadingTree,
     expandedNodes,
     setTree,
+    buildTree,
     keepTree,
     setExpanded,
   }

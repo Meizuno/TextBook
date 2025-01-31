@@ -1,17 +1,14 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { type TreeNode } from 'src/interface'
+import { type TreeNode } from 'src/db'
 import { LocalStorage } from 'quasar'
 
 export const useNodeStore = defineStore('node', () => {
   const selectedNode = ref<TreeNode>({
-    key: '',
     label: '',
     path: '/',
     content: '',
     type: '',
-    children: [],
-    header: '',
   })
 
   const activeNode = ref<TreeNode | null>(
@@ -31,13 +28,10 @@ export const useNodeStore = defineStore('node', () => {
 
   const unselectNode = () => {
     selectedNode.value = {
-      key: '',
       label: '',
       path: '/',
       content: '',
       type: '',
-      children: [],
-      header: '',
     }
   }
 

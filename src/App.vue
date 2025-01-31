@@ -8,8 +8,8 @@ import { onMounted } from 'vue'
 import { useTreeStore } from 'src/stores/tree'
 
 onMounted(async () => {
-  const { setTree } = useTreeStore()
-  await setTree()
+  const { buildTree } = useTreeStore()
+  await buildTree()
 })
 
 </script>

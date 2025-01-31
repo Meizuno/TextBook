@@ -1,14 +1,12 @@
 import { storeToRefs } from 'pinia'
 import { api } from 'src/boot/axios'
-import { type TreeNode } from 'src/interface'
+import { db, type TreeNode } from 'src/db'
 import { useTreeStore } from 'src/stores/tree'
-import { LocalStorage } from 'quasar'
 import { useNetworkStore } from 'src/stores/network'
 import { useSettingsStore } from 'src/stores/settings'
 
 export function useNode() {
-  const { tree } = storeToRefs(useTreeStore())
-  const { setTree } = useTreeStore()
+  const { buildTree } = useTreeStore()
 
   const { getStatus } = useNetworkStore()
   const { storeUrl } = storeToRefs(useSettingsStore())
@@ -26,34 +24,16 @@ export function useNode() {
       await api.post('/item', reducedNode)
     }
 
-    addNode(node)
-    LocalStorage.setItem('tree', JSON.stringify(tree.value))
-
-    await setTree()
+    await addNode(node)
+    await buildTree()
   }
 
-  const addNode = (newNode: TreeNode) => {
-    const pathArray = newNode.path.split('/').slice(1)
+  const addNode = async (newNode: TreeNode) => {
+    await db.treeNode.add(newNode)
+  }
 
-    const traverse = (nodes: TreeNode[]) => {
-      if (pathArray.length === 0) {
-        nodes.push({
-          ...newNode,
-          key: newNode.path + newNode.label,
-          header: newNode.type === 'directory' ? 'folder' : 'file',
-        })
-
-        return
-      }
-      for (const node of nodes) {
-        if (node.label === pathArray[0]) {
-          pathArray.shift()
-          return traverse(node.children)
-        }
-      }
-    }
-
-    traverse(tree.value)
+  const deleteNode = async (oldNode: TreeNode) => {
+    await db.treeNode.delete(oldNode.id)
   }
 
   const editNode = async (oldNode: TreeNode, newNode: TreeNode) => {
@@ -79,11 +59,9 @@ export function useNode() {
       })
     }
 
-    deleteNode(oldNode)
-    addNode(newNode)
-    LocalStorage.setItem('tree', JSON.stringify(tree.value))
-
-    await setTree()
+    await deleteNode(oldNode)
+    await addNode(newNode)
+    await buildTree()
   }
 
   const getFolders = (path: string, name: string) => {
@@ -94,34 +72,12 @@ export function useNode() {
           if (node.type === 'directory' && node.label !== name)
             result.push(node.label)
         }
-        if (node.children) {
-          traverse(node.children)
-        }
       }
     }
 
     const { tree } = useTreeStore()
     traverse(tree)
     return result
-  }
-
-  const deleteNode = (oldNode: TreeNode) => {
-    const pathArray = oldNode.path.split('/').slice(1)
-
-    const traverse = (nodes: TreeNode[]) => {
-      if (pathArray.length === 0) {
-        nodes.splice(nodes.indexOf(oldNode), 1)
-        return
-      }
-      for (const node of nodes) {
-        if (node.label === pathArray[0]) {
-          pathArray.shift()
-          return traverse(node.children)
-        }
-      }
-    }
-
-    traverse(tree.value)
   }
 
   return { createNode, editNode, getFolders }
