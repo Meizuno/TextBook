@@ -30,21 +30,21 @@ export function useNode() {
   }
 
   const addNode = async (newNode: TreeNode) => {
-    await db.treeNode.add(newNode)
+    await db.treeNode.add(toRaw(newNode))
   }
 
   const updateNode = async (oldNode: TreeNode, newNode: TreeNode) => {
     await db.treeNode.update(oldNode.id, toRaw(newNode))
 
-    const oldPathPrefix = oldNode.path + '/' + oldNode.label;
-    const newPathPrefix = newNode.path + '/' + newNode.label;
+    const oldPathPrefix = oldNode.path + '/' + oldNode.label
+    const newPathPrefix = newNode.path + '/' + newNode.label
 
     await db.treeNode
       .where('path')
       .startsWith(oldPathPrefix)
       .modify((child) => {
-        child.path = child.path.replace(oldPathPrefix, newPathPrefix);
-      });
+        child.path = child.path.replace(oldPathPrefix, newPathPrefix)
+      })
   }
 
   const editNode = async (oldNode: TreeNode, newNode: TreeNode) => {
@@ -75,7 +75,11 @@ export function useNode() {
   }
 
   const getFolders = async (path: string) => {
-    const nodes = await db.treeNode.where('path').equals(path).toArray()
+    const nodes = await db.treeNode
+      .where('path')
+      .equals(path)
+      .filter((node) => node.type === 'directory')
+      .toArray()
     return nodes.map((node) => node.label)
   }
 
