@@ -97,12 +97,13 @@ import { storeToRefs } from 'pinia'
 import { useQuasar } from 'quasar'
 import { useNavigation } from 'src/composables/useNavigation'
 import { type TreeNode } from 'src/db'
+import { SessionStorage } from 'quasar'
 
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 const q = useQuasar()
-const { setActiveNode, setSelectedNode } = useNodeStore()
+const { setActiveNode } = useNodeStore()
 const { tree, loadingTree, expandedNodes } = storeToRefs(useTreeStore())
 const { downloadTree, setExpanded } = useTreeStore()
 const { navigate } = useNavigation()
@@ -128,12 +129,12 @@ const chooseFile = async (node: TreeNode) => {
 }
 
 const editFolder = async (node: TreeNode) => {
-  setSelectedNode(node)
+  SessionStorage.set('selectedNode', JSON.stringify({ ...node }))
   await navigate('folder')
 }
 
 const editFile = async (node: TreeNode) => {
-  setSelectedNode(node)
+  SessionStorage.set('selectedNode', JSON.stringify({ ...node }))
   await navigate('file')
 }
 </script>

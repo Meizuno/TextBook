@@ -5,6 +5,7 @@ import { useTreeStore } from 'src/stores/tree'
 import { useNetworkStore } from 'src/stores/network'
 import { useSettingsStore } from 'src/stores/settings'
 import { toRaw } from 'vue'
+import { SessionStorage } from 'quasar'
 
 export function useNode() {
   const { buildTree } = useTreeStore()
@@ -74,14 +75,33 @@ export function useNode() {
     await buildTree()
   }
 
+  const isExists = async (selectedNode: TreeNode) => {
+    const nodes = await db.treeNode
+      .filter(
+        (node) =>
+          node.label === selectedNode.label &&
+          node.type === selectedNode.type &&
+          node.path !== selectedNode.path,
+      )
+      .toArray()
+    return nodes.length > 0
+  }
+
   const getFolders = async (path: string) => {
+    const selectedNode = JSON.parse(
+      SessionStorage.getItem('selectedNode') ?? 'null',
+    )
     const nodes = await db.treeNode
       .where('path')
       .equals(path)
-      .filter((node) => node.type === 'directory')
+      .filter(
+        (node) =>
+          node.type === 'directory' &&
+          (selectedNode === null || node.label !== selectedNode.label),
+      )
       .toArray()
     return nodes.map((node) => node.label)
   }
 
-  return { createNode, editNode, getFolders }
+  return { createNode, editNode, getFolders, isExists }
 }

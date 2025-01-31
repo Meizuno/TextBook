@@ -49,6 +49,8 @@ export default {
     folderCreated: 'Folder created',
     fileUpdated: 'File updated',
     folderUpdated: 'Folder updated',
+    folderExists: 'Folder exists',
+    fileExists: 'File exists',
   },
   desktop: {
     navigation: 'Navigation',

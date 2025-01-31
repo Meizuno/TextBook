@@ -25,7 +25,7 @@
                 >
                   <div>
                     {{
-                      selectedNode.type === 'directory'
+                      selectedNode?.type === 'directory'
                         ? t('desktop.editFolder')
                         : t('desktop.createFolder')
                     }}
@@ -50,7 +50,7 @@
                       >
                         <div>
                           {{
-                            selectedNode.type === 'file'
+                            selectedNode?.type === 'file'
                               ? t('desktop.editFile')
                               : t('desktop.createFile')
                           }}
@@ -91,15 +91,21 @@ import SelectedView from 'src/components/views/SelectedView.vue'
 import FolderView from 'src/components/views/FolderView.vue'
 import SettingsView from 'src/components/views/SettingsView.vue'
 import FileView from 'src/components/views/FileView.vue'
+import { SessionStorage } from 'quasar'
 
-import { useNodeStore } from 'src/stores/node'
-import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { type TreeNode } from 'src/db'
 
 const { t } = useI18n()
-const { selectedNode } = storeToRefs(useNodeStore())
-const { unselectNode } = useNodeStore()
+
+const selectedNode: TreeNode | null = JSON.parse(
+  SessionStorage.getItem('selectedNode') ?? 'null',
+)
+
+const unselectNode = () => {
+  SessionStorage.removeItem('selectedNode')
+}
 
 const splitter1 = ref(30)
 const splitter2 = ref(60)

@@ -24,7 +24,7 @@
       <div class="text-h6">{{ t('form.path') }}</div>
         <div>
           <q-btn
-            v-if="path !== '/'"
+            v-if="path !== ''"
             flat
             :color="$q.dark.isActive ? 'primary' : 'white'"
             :label="t('button.back')"

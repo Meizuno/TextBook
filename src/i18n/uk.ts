@@ -50,6 +50,8 @@ export default {
     folderCreated: 'Папку створено',
     fileUpdated: 'Файл оновлено',
     folderUpdated: 'Папку оновлено',
+    folderExists: 'Папка вже існує',
+    fileExists: 'Файл вже існує',
   },
   desktop: {
     navigation: 'Навігація',

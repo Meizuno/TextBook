@@ -49,6 +49,8 @@ export default {
     folderCreated: 'Složka vytvořena',
     fileUpdated: 'Soubor aktualizován',
     folderUpdated: 'Složka aktualizována',
+    folderExists: 'Složka jiz existuje',
+    fileExists: 'Soubor jiz existuje',
   },
   desktop: {
     navigation: 'Navigace',
