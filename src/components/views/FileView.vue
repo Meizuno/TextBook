@@ -52,10 +52,25 @@ onMounted(async () => {
 
 const onSubmit = async () => {
   if (isCreated) {
-    await createNode(selectedNode.value)
+    await createNode({
+      label: selectedNode.value.label,
+      path: selectedNode.value.path,
+      type: 'file',
+      content: selectedNode.value.content,
+    })
     success(t('notify.fileCreated'))
   } else {
-    await editNode(savedSelectedNode, selectedNode.value)
+    await editNode({
+      label: savedSelectedNode.label,
+      path: savedSelectedNode.path,
+      content: savedSelectedNode.content,
+      type: 'file',
+    }, {
+      label: selectedNode.value.label,
+      path: selectedNode.value.path,
+      content: selectedNode.value.content,
+      type: 'file',
+    })
     success(t('notify.fileUpdated'))
   }
   await navigate('home')

@@ -50,7 +50,17 @@ const onSubmit = async () => {
     })
     success(t('notify.folderCreated'))
   } else {
-    await editNode(savedSelectedNode, selectedNode.value)
+    await editNode({
+      label: savedSelectedNode.label,
+      path: savedSelectedNode.path,
+      content: savedSelectedNode.content,
+      type: 'directory',
+    }, {
+      label: selectedNode.value.label,
+      path: selectedNode.value.path,
+      content: selectedNode.value.content,
+      type: 'directory',
+    })
     success(t('notify.folderUpdated'))
   }
   await navigate('home')
