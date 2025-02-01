@@ -34,7 +34,7 @@ const selectedNode = ref(
   ),
 )
 
-const savedSelectedNode = selectedNode.value
+const savedSelectedNode = { ...selectedNode.value }
 const isCreated = selectedNode.value.type === 'directory' ? false : true
 
 const pageTitle = inject('pageTitle') as Ref<string>
@@ -42,9 +42,13 @@ pageTitle.value = isCreated ? t('layout.createFolder') : t('layout.editFolder')
 
 const { success, error } = useNotify()
 const { navigate } = useNavigation()
-const { createNode, editNode, isExists } = useNode()
+const { createNode, editNode, isExists, areEqual } = useNode()
 
 const onSubmit = async () => {
+  if (areEqual(savedSelectedNode, selectedNode.value)) {
+    await navigate('home')
+    return
+  }
   if (isCreated) {
     if (
       await isExists({

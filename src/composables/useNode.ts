@@ -37,15 +37,17 @@ export function useNode() {
   const updateNode = async (oldNode: TreeNode, newNode: TreeNode) => {
     await db.treeNode.update(oldNode.id, toRaw(newNode))
 
-    const oldPathPrefix = oldNode.path + '/' + oldNode.label
-    const newPathPrefix = newNode.path + '/' + newNode.label
+    if (newNode.type === 'directory') {
+      const oldPathPrefix = oldNode.path + '/' + oldNode.label
+      const newPathPrefix = newNode.path + '/' + newNode.label
 
-    await db.treeNode
-      .where('path')
-      .startsWith(oldPathPrefix)
-      .modify((child) => {
-        child.path = child.path.replace(oldPathPrefix, newPathPrefix)
-      })
+      await db.treeNode
+        .where('path')
+        .startsWith(oldPathPrefix)
+        .modify((child) => {
+          child.path = child.path.replace(oldPathPrefix, newPathPrefix)
+        })
+    }
   }
 
   const editNode = async (oldNode: TreeNode, newNode: TreeNode) => {
@@ -81,10 +83,20 @@ export function useNode() {
         (node) =>
           node.label === selectedNode.label &&
           node.type === selectedNode.type &&
-          node.path !== selectedNode.path,
+          node.path === selectedNode.path &&
+          node.content === selectedNode.content,
       )
       .toArray()
     return nodes.length > 0
+  }
+
+  const areEqual = (node1: TreeNode, node2: TreeNode) => {
+    return (
+      node1.label === node2.label &&
+      node1.type === node2.type &&
+      node1.path === node2.path &&
+      node1.content === node2.content
+    )
   }
 
   const getFolders = async (path: string) => {
@@ -97,11 +109,11 @@ export function useNode() {
       .filter(
         (node) =>
           node.type === 'directory' &&
-          (selectedNode === null || node.label !== selectedNode.label),
+          (selectedNode === null || node.id !== selectedNode.id),
       )
       .toArray()
     return nodes.map((node) => node.label)
   }
 
-  return { createNode, editNode, getFolders, isExists }
+  return { createNode, editNode, getFolders, isExists, areEqual }
 }
