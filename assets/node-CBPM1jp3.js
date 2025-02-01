@@ -1,1 +1,0 @@
-import{ap as s,r as a,aq as e}from"./index-B1GS6p5i.js";const c=s("node",()=>{const t=a(e.getItem("activeNode")?JSON.parse(e.getItem("activeNode")):null);return{activeNode:t,setActiveNode:o=>{e.setItem("activeNode",JSON.stringify(o)),t.value=o}}});export{c as u};

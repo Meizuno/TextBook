@@ -1,0 +1,1 @@
+import{ap as s,r as a,aq as e}from"./index-BMxCNfhY.js";const c=s("node",()=>{const t=a(e.getItem("activeNode")?JSON.parse(e.getItem("activeNode")):null);return{activeNode:t,setActiveNode:o=>{e.setItem("activeNode",JSON.stringify(o)),t.value=o}}});export{c as u};
