@@ -2,7 +2,6 @@
   <q-pull-to-refresh
     @refresh="refresh"
     :bg-color="q.dark.isActive ? 'dark' : 'white'"
-    class="absolute-full md:relative"
   >
     <div class="q-pa-md">
       <q-input
