@@ -25,6 +25,7 @@ import PathInput from 'src/components/form/PathInput.vue'
 import NameInput from 'src/components/form/NameInput.vue'
 import ContentInput from 'src/components/form/ContentInput.vue'
 
+import { useNodeStore } from 'stores/node'
 import { SessionStorage } from 'quasar'
 import { useI18n } from 'vue-i18n'
 
@@ -42,61 +43,36 @@ const isCreated = selectedNode.value.type === 'file' ? false : true
 const pageTitle = inject('pageTitle') as Ref<string>
 pageTitle.value = isCreated ? t('layout.createFile') : t('layout.editFile')
 
-const { success, error } = useNotify()
+const { success } = useNotify()
 const { navigate } = useNavigation()
-const { createNode, editNode, isExists, areEqual } = useNode()
+const { createNode, editNode } = useNode()
+const { setActiveNode } = useNodeStore()
 
 const onSubmit = async () => {
-  if (areEqual(savedSelectedNode, selectedNode.value)) {
-    await navigate('home')
-    return
-  }
   if (isCreated) {
-    if (
-      await isExists({
-        label: selectedNode.value.label,
-        path: selectedNode.value.path,
-        type: 'file',
-        content: selectedNode.value.content,
-      })
-    ) {
-      error(t('notify.fileExists'))
-    } else {
-      await createNode({
-        label: selectedNode.value.label,
-        path: selectedNode.value.path,
-        type: 'file',
-        content: selectedNode.value.content,
-      })
+    const result = await createNode(
+      selectedNode.value.label,
+      selectedNode.value.path,
+      'file',
+      selectedNode.value.content,
+    )
+
+    if (result) {
+      setActiveNode(result)
       success(t('notify.fileCreated'))
       await navigate('home')
     }
   } else {
-    if (
-      await isExists({
-        label: selectedNode.value.label,
-        path: selectedNode.value.path,
-        type: 'file',
-        content: selectedNode.value.content,
-      })
-    ) {
-      error(t('notify.fileExists'))
-    } else {
-      await editNode(
-        {
-          id: savedSelectedNode.id as number,
-          label: savedSelectedNode.label,
-          path: savedSelectedNode.path,
-          content: savedSelectedNode.content,
-          type: 'file',
-        },
-        {
-          label: selectedNode.value.label,
-          path: selectedNode.value.path,
-          content: selectedNode.value.content,
-          type: 'file',
-        },
-      )
+    const result = await editNode(
+      savedSelectedNode.id as number,
+      selectedNode.value.label,
+      selectedNode.value.path,
+      'file',
+      selectedNode.value.content,
+    )
+
+    if (result) {
+      setActiveNode(result)
       success(t('notify.fileUpdated'))
       await navigate('home')
     }

@@ -9,19 +9,19 @@
     hint=""
   />
   <q-dialog v-model="dialog">
-  <q-card
-    :class="[
-      $q.dark.isActive ? 'bg-dark text-white' : 'bg-white text-dark',
-      'w-80 shadow-lg rounded-md h-[300px] flex flex-col',
-    ]"
-  >
-    <q-card-section
-      :class="
-        $q.dark.isActive ? 'bg-grey-9 text-white' : 'bg-primary text-white'
-      "
-      class="flex justify-between"
+    <q-card
+      :class="[
+        $q.dark.isActive ? 'bg-dark text-white' : 'bg-white text-dark',
+        'w-80 shadow-lg rounded-md h-[300px] flex flex-col',
+      ]"
     >
-      <div class="text-h6">{{ t('form.path') }}</div>
+      <q-card-section
+        :class="
+          $q.dark.isActive ? 'bg-grey-9 text-white' : 'bg-primary text-white'
+        "
+        class="flex justify-between"
+      >
+        <div class="text-h6">{{ t('form.path') }}</div>
         <div>
           <q-btn
             v-if="path !== ''"
@@ -40,7 +40,10 @@
       </q-card-section>
 
       <q-card-section class="p-4 flex-1 overflow-auto">
-        <div v-if="options.length === 0" class="h-full flex flex-center text-grey-7">
+        <div
+          v-if="options.length === 0"
+          class="h-full flex flex-center text-grey-7"
+        >
           {{ t('message.moveHere') }}
         </div>
         <q-intersection
@@ -65,10 +68,9 @@
           </q-item>
         </q-intersection>
       </q-card-section>
-    <q-separator />
-  </q-card>
-</q-dialog>
-
+      <q-separator />
+    </q-card>
+  </q-dialog>
 </template>
 
 <script setup lang="ts">

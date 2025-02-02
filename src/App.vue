@@ -11,5 +11,4 @@ onMounted(async () => {
   const { buildTree } = useTreeStore()
   await buildTree()
 })
-
 </script>

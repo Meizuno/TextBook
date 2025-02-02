@@ -73,7 +73,7 @@ export const useTreeStore = defineStore('tree', () => {
     if (network.connected && storeUrl.value) {
       const { data } = await api.get('/')
 
-      await db.treeNode.clear();
+      await db.treeNode.clear()
 
       for (const node of data) {
         await db.treeNode.add(node)

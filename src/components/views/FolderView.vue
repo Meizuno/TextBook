@@ -40,61 +40,32 @@ const isCreated = selectedNode.value.type === 'directory' ? false : true
 const pageTitle = inject('pageTitle') as Ref<string>
 pageTitle.value = isCreated ? t('layout.createFolder') : t('layout.editFolder')
 
-const { success, error } = useNotify()
+const { success } = useNotify()
 const { navigate } = useNavigation()
-const { createNode, editNode, isExists, areEqual } = useNode()
+const { createNode, editNode } = useNode()
 
 const onSubmit = async () => {
-  if (areEqual(savedSelectedNode, selectedNode.value)) {
-    await navigate('home')
-    return
-  }
   if (isCreated) {
-    if (
-      await isExists({
-        label: selectedNode.value.label,
-        path: selectedNode.value.path,
-        type: 'directory',
-        content: '',
-      })
-    ) {
-      error(t('notify.folderExists'))
-    } else {
-      await createNode({
-        label: selectedNode.value.label,
-        path: selectedNode.value.path,
-        type: 'directory',
-        content: '',
-      })
+    const result = await createNode(
+      selectedNode.value.label,
+      selectedNode.value.path,
+      'directory',
+    )
+
+    if (result) {
       success(t('notify.folderCreated'))
       await navigate('home')
     }
   } else {
-    if (
-      await isExists({
-        label: selectedNode.value.label,
-        path: selectedNode.value.path,
-        type: 'directory',
-        content: '',
-      })
-    ) {
-      error(t('notify.folderExists'))
-    } else {
-      await editNode(
-        {
-          id: savedSelectedNode.id as number,
-          label: savedSelectedNode.label,
-          path: savedSelectedNode.path,
-          content: savedSelectedNode.content,
-          type: 'directory',
-        },
-        {
-          label: selectedNode.value.label,
-          path: selectedNode.value.path,
-          content: selectedNode.value.content,
-          type: 'directory',
-        },
-      )
+    const result = await editNode(
+      savedSelectedNode.id as number,
+      selectedNode.value.label,
+      selectedNode.value.path,
+      'directory',
+      selectedNode.value.content,
+    )
+
+    if (result) {
       success(t('notify.folderUpdated'))
       await navigate('home')
     }

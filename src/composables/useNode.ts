@@ -4,8 +4,11 @@ import { db, type TreeNode } from 'src/db'
 import { useTreeStore } from 'src/stores/tree'
 import { useNetworkStore } from 'src/stores/network'
 import { useSettingsStore } from 'src/stores/settings'
+import { useNotify } from 'src/composables/useNotify'
 import { toRaw } from 'vue'
 import { SessionStorage } from 'quasar'
+import { useI18n } from 'vue-i18n'
+import { useNavigation } from 'src/composables/useNavigation'
 
 export function useNode() {
   const { buildTree } = useTreeStore()
@@ -13,25 +16,38 @@ export function useNode() {
   const { getStatus } = useNetworkStore()
   const { storeUrl } = storeToRefs(useSettingsStore())
 
-  const createNode = async (node: TreeNode) => {
-    const network = await getStatus()
-    if (network.connected && storeUrl.value) {
-      const reducedNode = {
-        label: node.label,
-        path: node.path,
-        content: node.content,
-        type: node.type,
-        children: [],
-      }
-      await api.post('/item', reducedNode)
+  const { navigate } = useNavigation()
+  const { error } = useNotify()
+  const { t } = useI18n()
+
+  const createNode = async (
+    label: string,
+    path: string,
+    type: string,
+    content: string = '',
+  ) => {
+    const node = {
+      label: label,
+      path: path,
+      content: content,
+      type: type,
+      children: [],
     }
 
-    await addNode(node)
-    await buildTree()
-  }
+    if (await isExists(label, path, type, content)) {
+      error(t('notify.fileExists'))
+      return
+    }
 
-  const addNode = async (newNode: TreeNode) => {
-    await db.treeNode.add(toRaw(newNode))
+    const network = await getStatus()
+    if (network.connected && storeUrl.value) {
+      await api.post('/item', node)
+    }
+
+    const id = await db.treeNode.add(node)
+    await buildTree()
+
+    return id
   }
 
   const updateNode = async (oldNode: TreeNode, newNode: TreeNode) => {
@@ -50,47 +66,77 @@ export function useNode() {
     }
   }
 
-  const editNode = async (oldNode: TreeNode, newNode: TreeNode) => {
+  const editNode = async (
+    id: number,
+    label: string,
+    path: string,
+    type: string,
+    content: string,
+  ) => {
+    const node = await db.treeNode.get(id)
+    if (node === undefined) {
+      return
+    }
+
+    const oldNode = {
+      label: node.label,
+      path: node.path,
+      content: node.content,
+      type: node.type,
+    }
+    const newNode = {
+      label: label,
+      path: path,
+      content: content,
+      type: type,
+    }
+
+    if (await isExists(label, path, type, content)) {
+      error(t('notify.fileExists'))
+      return
+    }
+
+    if (areEqual(oldNode, newNode)) {
+      await navigate('home')
+      return
+    }
+
     const network = await getStatus()
     if (network.connected && storeUrl.value) {
-      const reducedOldNode = {
-        label: oldNode.label,
-        path: oldNode.path,
-        content: oldNode.content,
-        type: oldNode.type,
-        children: [],
-      }
-      const reducedNewNode = {
-        label: newNode.label,
-        path: newNode.path,
-        content: newNode.content,
-        type: newNode.type,
-        children: [],
-      }
       await api.put('/item', {
-        old_item: reducedOldNode,
-        new_item: reducedNewNode,
+        old_item: oldNode,
+        new_item: newNode,
       })
     }
 
-    await updateNode(oldNode, newNode)
+    await updateNode({ ...oldNode, id: node.id }, { ...newNode, id: node.id })
     await buildTree()
+
+    return id
   }
 
-  const isExists = async (selectedNode: TreeNode) => {
+  const isExists = async (
+    label: string,
+    path: string,
+    type: string,
+    content: string,
+  ) => {
     const nodes = await db.treeNode
       .filter(
         (node) =>
-          node.label === selectedNode.label &&
-          node.type === selectedNode.type &&
-          node.path === selectedNode.path &&
-          node.content === selectedNode.content,
+          node.label === label &&
+          node.type === type &&
+          node.path === path &&
+          node.content === content,
       )
       .toArray()
     return nodes.length > 0
   }
 
-  const areEqual = (node1: TreeNode, node2: TreeNode) => {
+  const areEqual = (
+    node1: { label: string; type: string; path: string; content: string },
+    node2: { label: string; type: string; path: string; content: string },
+  ) => {
     return (
       node1.label === node2.label &&
       node1.type === node2.type &&

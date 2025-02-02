@@ -124,7 +124,7 @@ const refresh = async (done: () => void) => {
 }
 
 const chooseFile = async (node: TreeNode) => {
-  setActiveNode(node)
+  setActiveNode(node.id)
   await navigate('active')
 }
 

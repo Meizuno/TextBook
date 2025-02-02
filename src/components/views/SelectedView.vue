@@ -20,15 +20,22 @@
 </template>
 
 <script setup lang="ts">
-import { inject, type Ref } from 'vue'
-import { storeToRefs } from 'pinia'
+import { inject, type Ref, ref, onMounted } from 'vue'
 import { useNodeStore } from 'src/stores/node'
 import { marked } from 'marked'
 import 'github-markdown-css/github-markdown.css'
 import { useI18n } from 'vue-i18n'
+import { type TreeNode } from 'src/db'
 
 const { t } = useI18n()
-const { activeNode } = storeToRefs(useNodeStore())
+const { getActiveNode } = useNodeStore()
+
+const activeNode = ref<TreeNode | null>(null)
 const pageTitle = inject('pageTitle') as Ref<string>
 pageTitle.value = activeNode.value?.label.split('.')[0] || t('layout.main')
+
+onMounted(async () => {
+  activeNode.value = await getActiveNode()
+  pageTitle.value = activeNode.value?.label.split('.')[0] || t('layout.main')
+})
 </script>

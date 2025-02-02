@@ -1,7 +1,7 @@
-import Dexie, { type EntityTable } from 'dexie';
+import Dexie, { type EntityTable } from 'dexie'
 
 interface TreeNode {
-  id?: number
+  id: number
   label: string
   path: string
   content: string
@@ -13,17 +13,13 @@ interface QTreeNode extends TreeNode {
   header: string
 }
 
-
 const db = new Dexie('TreeNodeDatabase') as Dexie & {
-  treeNode: EntityTable<
-  TreeNode,
-    'id'
-  >;
-};
+  treeNode: EntityTable<TreeNode, 'id'>
+}
 
 db.version(1).stores({
   treeNode: '++id, label, path, content, type',
-});
+})
 
-export type { TreeNode, QTreeNode };
-export { db };
+export type { TreeNode, QTreeNode }
+export { db }

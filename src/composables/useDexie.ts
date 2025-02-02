@@ -1,6 +1,5 @@
-import { db, type TreeNode } from 'src/db';
-import { liveQuery } from "dexie";
-
+import { db, type TreeNode } from 'src/db'
+import { liveQuery } from 'dexie'
 
 export function useDexie() {
   const getAllNodes = () => {

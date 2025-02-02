@@ -26,7 +26,7 @@
       type: string = 'file' | "directory";
     }
     ```
-  
+
   - with response
 
     ```ts

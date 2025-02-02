@@ -1,22 +1,28 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { type TreeNode } from 'src/db'
 import { LocalStorage } from 'quasar'
+import { db } from 'src/db'
 
 export const useNodeStore = defineStore('node', () => {
-  const activeNode = ref<TreeNode | null>(
-    LocalStorage.getItem('activeNode')
-      ? JSON.parse(LocalStorage.getItem('activeNode') as string)
-      : null,
+  const storedValue = LocalStorage.getItem('activeNode') as string
+  const activeNode = ref<number>(
+    storedValue !== null && !isNaN(parseInt(storedValue))
+      ? parseInt(storedValue, 10)
+      : 0,
   )
 
-  const setActiveNode = (node: TreeNode) => {
-    LocalStorage.setItem('activeNode', JSON.stringify(node))
-    activeNode.value = node
+  const setActiveNode = (id: number) => {
+    LocalStorage.setItem('activeNode', id)
+    activeNode.value = id
+  }
+
+  const getActiveNode = async () => {
+    return (await db.treeNode.get(activeNode.value)) || null
   }
 
   return {
     activeNode,
     setActiveNode,
+    getActiveNode,
   }
 })
