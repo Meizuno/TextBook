@@ -47,7 +47,7 @@ const { createNode, editNode } = useNode()
 const onSubmit = async () => {
   if (isCreated) {
     const result = await createNode(
-      selectedNode.value.label,
+      selectedNode.value.label.trim(),
       selectedNode.value.path,
       'directory',
     )
@@ -59,7 +59,7 @@ const onSubmit = async () => {
   } else {
     const result = await editNode(
       savedSelectedNode.id as number,
-      selectedNode.value.label,
+      selectedNode.value.label.trim(),
       selectedNode.value.path,
       'directory',
       selectedNode.value.content,

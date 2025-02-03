@@ -51,7 +51,7 @@ const { setActiveNode } = useNodeStore()
 const onSubmit = async () => {
   if (isCreated) {
     const result = await createNode(
-      selectedNode.value.label,
+      selectedNode.value.label.trim(),
       selectedNode.value.path,
       'file',
       selectedNode.value.content,
@@ -65,7 +65,7 @@ const onSubmit = async () => {
   } else {
     const result = await editNode(
       savedSelectedNode.id as number,
-      selectedNode.value.label,
+      selectedNode.value.label.trim(),
       selectedNode.value.path,
       'file',
       selectedNode.value.content,
