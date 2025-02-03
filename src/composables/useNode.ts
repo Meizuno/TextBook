@@ -31,10 +31,9 @@ export function useNode() {
       path: path,
       content: content,
       type: type,
-      children: [],
     }
 
-    if (await isExists(label, path, type, content)) {
+    if (await isExists(label, path, type)) {
       error(t('notify.fileExists'))
       return
     }
@@ -91,13 +90,13 @@ export function useNode() {
       type: type,
     }
 
-    if (await isExists(label, path, type, content)) {
-      error(t('notify.fileExists'))
-      return
-    }
-
     if (areEqual(oldNode, newNode)) {
       await navigate('home')
+      return id
+    }
+
+    if (await isExists(label, path, type)) {
+      error(t('notify.fileExists'))
       return
     }
 
@@ -115,19 +114,11 @@ export function useNode() {
     return id
   }
 
-  const isExists = async (
-    label: string,
-    path: string,
-    type: string,
-    content: string,
-  ) => {
+  const isExists = async (label: string, path: string, type: string) => {
     const nodes = await db.treeNode
       .filter(
         (node) =>
-          node.label === label &&
-          node.type === type &&
-          node.path === path &&
-          node.content === content,
+          node.label === label && node.type === type && node.path === path,
       )
       .toArray()
     return nodes.length > 0
