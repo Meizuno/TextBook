@@ -12,6 +12,7 @@ export default {
     ok: 'ОК',
     back: 'Назад',
     submit: 'Надіслати',
+    delete: 'Видалити',
   },
   layout: {
     main: 'Текстова книга',
@@ -43,6 +44,11 @@ export default {
     upload: 'Вивантажити файли',
     uploadMessage:
       'Ви впевнені, що хочете вивантажити файли? Це видалить файли на сервері.',
+    deleteFile: 'Видалити файл',
+    deleteFileMessage: 'Ви впевнені, що хочете видалити цей файл?',
+    deleteFolder: 'Видалити папку',
+    deleteFolderMessage:
+      'Ви впевнені, що хочете видалити цю папку? Це видалить всі файли в папці.',
   },
   notify: {
     invalidURL: 'Недійсна URL',
@@ -52,6 +58,8 @@ export default {
     folderUpdated: 'Папку оновлено',
     folderExists: 'Папка вже існує',
     fileExists: 'Файл вже існує',
+    folderDelete: 'Папка видалена',
+    fileDelete: 'Файл видалено',
   },
   desktop: {
     navigation: 'Навігація',

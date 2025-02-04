@@ -12,6 +12,7 @@ export default {
     ok: 'OK',
     back: 'Zpět',
     submit: 'Odeslat',
+    delete: 'Smazat',
   },
   layout: {
     main: 'Textová kniha',
@@ -42,6 +43,11 @@ export default {
     upload: 'Nahrát soubory',
     uploadMessage:
       'Opravdu chcete nahrát soubory? Tím budou smazány soubory na serveru.',
+    deleteFile: 'Odstranit soubor',
+    deleteFileMessage: 'Opravdu chcete smazat tento soubor?',
+    deleteFolder: 'Odstranit složku',
+    deleteFolderMessage:
+      'Opravdu chcete smazat tuto složku? Tím budou smazání místní složky.',
   },
   notify: {
     invalidURL: 'Neplatná URL',
@@ -51,6 +57,8 @@ export default {
     folderUpdated: 'Složka aktualizována',
     folderExists: 'Složka jiz existuje',
     fileExists: 'Soubor jiz existuje',
+    folderDelete: 'Složka smazana',
+    fileDelete: 'Soubor smazan',
   },
   desktop: {
     navigation: 'Navigace',

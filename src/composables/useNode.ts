@@ -114,6 +114,42 @@ export function useNode() {
     return id
   }
 
+  const deleteNode = async (
+    id: number,
+    label: string,
+    path: string,
+    type: string,
+    content: string,
+  ) => {
+    const node = await db.treeNode.get(id)
+    if (node === undefined) {
+      return
+    }
+
+    await db.treeNode.delete(id)
+
+    if (node.type === 'directory') {
+      await db.treeNode
+        .where('path')
+        .startsWith(node.path + '/' + node.label)
+        .delete()
+    }
+
+    const network = await getStatus()
+    if (network.connected && storeUrl.value) {
+      await api.delete('/item', {
+        data: {
+          label: label,
+          path: path,
+          type: type,
+          content: content,
+        },
+      })
+    }
+
+    await buildTree()
+  }
+
   const isExists = async (label: string, path: string, type: string) => {
     const nodes = await db.treeNode
       .filter(
@@ -152,5 +188,5 @@ export function useNode() {
     return nodes.map((node) => node.label)
   }
 
-  return { createNode, editNode, getFolders, isExists, areEqual }
+  return { createNode, editNode, deleteNode, getFolders, isExists, areEqual }
 }

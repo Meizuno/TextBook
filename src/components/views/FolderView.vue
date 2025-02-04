@@ -2,7 +2,15 @@
   <q-form @submit="onSubmit" class="q-gutter-md q-pa-lg">
     <name-input v-model="selectedNode.label" />
     <path-input v-model="selectedNode.path" />
+
     <div class="flex justify-end">
+      <q-btn
+        v-if="!isCreated"
+        :label="t('button.delete')"
+        color="negative"
+        class="q-ml-sm"
+        @click="askToDelete"
+      />
       <q-btn
         :label="t('button.submit')"
         type="submit"
@@ -22,10 +30,13 @@ import NameInput from 'src/components/form/NameInput.vue'
 import { useNavigation } from 'src/composables/useNavigation'
 import { useNode } from 'src/composables/useNode'
 import { useNotify } from 'src/composables/useNotify'
-import { SessionStorage } from 'quasar'
+import { LocalStorage, SessionStorage } from 'quasar'
 
 import { useI18n } from 'vue-i18n'
+import { useQuasar } from 'quasar'
 
+
+const q = useQuasar()
 const { t } = useI18n()
 const selectedNode = ref(
   JSON.parse(
@@ -42,7 +53,7 @@ pageTitle.value = isCreated ? t('layout.createFolder') : t('layout.editFolder')
 
 const { success } = useNotify()
 const { navigate } = useNavigation()
-const { createNode, editNode } = useNode()
+const { createNode, editNode, deleteNode } = useNode()
 
 const onSubmit = async () => {
   if (isCreated) {
@@ -70,6 +81,31 @@ const onSubmit = async () => {
       await navigate('home')
     }
   }
+}
+
+const askToDelete = () => {
+  q.dialog({
+    title: t('dialog.deleteFolder'),
+    message: t('dialog.deleteFolderMessage'),
+    cancel: true,
+    persistent: true,
+  }).onOk(() => {
+    deleteNode(
+      savedSelectedNode.id as number,
+      savedSelectedNode.label,
+      savedSelectedNode.path,
+      savedSelectedNode.type,
+      savedSelectedNode.content,
+    ).then(async () => {
+      if (LocalStorage.getItem('activeNode') === savedSelectedNode.id) {
+        LocalStorage.setItem('activeNode', 0)
+      }
+      success(t('notify.fileDelete'))
+      await navigate('home')
+    }).catch(() => {
+      console.error('Error deleting file')
+    })
+  })
 }
 
 onBeforeUnmount(() => {

@@ -12,6 +12,7 @@ export default {
     ok: 'OK',
     back: 'Back',
     submit: 'Submit',
+    delete: 'Delete',
   },
   layout: {
     main: 'Text Book',
@@ -42,6 +43,12 @@ export default {
     upload: 'Upload files',
     uploadMessage:
       'Are you sure you want to upload files? It will delete the server files.',
+    deleteFile: 'Delete file',
+    deleteFileMessage:
+      'Are you sure you want to delete the file?',
+    deleteFolder: 'Delete folder',
+    deleteFolderMessage:
+      'Are you sure you want to delete the folder? It will delete all items inside.',
   },
   notify: {
     invalidURL: 'Invalid URL',
@@ -51,6 +58,8 @@ export default {
     folderUpdated: 'Folder updated',
     folderExists: 'Folder exists',
     fileExists: 'File exists',
+    folderDelete: 'Folder deleted',
+    fileDelete: 'File deleted',
   },
   desktop: {
     navigation: 'Navigation',

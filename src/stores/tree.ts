@@ -53,7 +53,7 @@ export const useTreeStore = defineStore('tree', () => {
     }
 
     for (const parent of result) {
-      await dfs(parent)
+      if (parent.type === 'directory') await dfs(parent)
     }
 
     tree.value = result
