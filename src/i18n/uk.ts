@@ -71,4 +71,7 @@ export default {
     unselect: 'Скасувати вибір',
     settings: 'Налаштування',
   },
+  server: {
+    error: 'Помилка серверу',
+  },
 }

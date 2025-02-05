@@ -71,4 +71,7 @@ export default {
     unselect: 'Unselect',
     settings: 'Settings',
   },
+  server: {
+    error: 'Server error',
+  },
 }

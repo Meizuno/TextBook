@@ -40,7 +40,11 @@ export function useNode() {
 
     const network = await getStatus()
     if (network.connected && storeUrl.value) {
-      await api.post('/item', node)
+      try {
+        await api.post('/', node)
+      } catch {
+        error(t('notify.error'))
+      }
     }
 
     const id = await db.treeNode.add(node)
@@ -102,10 +106,14 @@ export function useNode() {
 
     const network = await getStatus()
     if (network.connected && storeUrl.value) {
-      await api.put('/item', {
-        old_item: oldNode,
-        new_item: newNode,
-      })
+      try {
+        await api.put('/item', {
+          old_item: oldNode,
+          new_item: newNode,
+        })
+      } catch {
+        error(t('server.error'))
+      }
     }
 
     await updateNode({ ...oldNode, id: node.id }, { ...newNode, id: node.id })
@@ -121,6 +129,22 @@ export function useNode() {
     type: string,
     content: string,
   ) => {
+    const network = await getStatus()
+    if (network.connected && storeUrl.value) {
+      try {
+        await api.delete('/item', {
+          data: {
+            label: label,
+            path: path,
+            type: type,
+            content: content,
+          },
+        })
+      } catch {
+        error(t('server.error'))
+      }
+    }
+  
     const node = await db.treeNode.get(id)
     if (node === undefined) {
       return
@@ -133,18 +157,6 @@ export function useNode() {
         .where('path')
         .startsWith(node.path + '/' + node.label)
         .delete()
-    }
-
-    const network = await getStatus()
-    if (network.connected && storeUrl.value) {
-      await api.delete('/item', {
-        data: {
-          label: label,
-          path: path,
-          type: type,
-          content: content,
-        },
-      })
     }
 
     await buildTree()

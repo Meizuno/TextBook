@@ -70,4 +70,7 @@ export default {
     unselect: 'Zrušit výběr',
     settings: 'Nastavení',
   },
+  server: {
+    error: 'Chyba serveru',
+  },
 }

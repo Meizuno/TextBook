@@ -4,6 +4,8 @@ import { api } from 'src/boot/axios'
 import { db, type TreeNode, type QTreeNode } from 'src/db'
 import { useNetworkStore } from './network'
 import { useSettingsStore } from 'src/stores/settings'
+import { useNotify } from 'src/composables/useNotify'
+import { useI18n } from 'vue-i18n'
 
 export const useTreeStore = defineStore('tree', () => {
   const tree = ref<QTreeNode[]>([])
@@ -12,6 +14,9 @@ export const useTreeStore = defineStore('tree', () => {
 
   const { getStatus } = useNetworkStore()
   const { storeUrl } = storeToRefs(useSettingsStore())
+
+  const { error } = useNotify()
+  const { t } = useI18n()
 
   const delay = async (ms: number) =>
     await new Promise((resolve) => setTimeout(resolve, ms))
@@ -71,12 +76,15 @@ export const useTreeStore = defineStore('tree', () => {
     loadingTree.value = true
     const network = await getStatus()
     if (network.connected && storeUrl.value) {
-      const { data } = await api.get('/')
+      try {
+        const { data } = await api.get('/')
+        await db.treeNode.clear()
 
-      await db.treeNode.clear()
-
-      for (const node of data) {
-        await db.treeNode.add(node)
+        for (const node of data) {
+          await db.treeNode.add(node)
+        }
+      } catch {
+        error(t('server.error'))
       }
     }
 
@@ -89,7 +97,11 @@ export const useTreeStore = defineStore('tree', () => {
     const network = await getStatus()
     if (network.connected && storeUrl.value) {
       await buildTree()
-      await api.post('/', tree.value)
+      try {
+        await api.post('/', tree.value)
+      } catch {
+        error(t('server.error'))
+      }
     }
   }
 
