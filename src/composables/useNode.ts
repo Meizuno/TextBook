@@ -44,6 +44,7 @@ export function useNode() {
         await api.post('/', node)
       } catch {
         error(t('notify.error'))
+        return
       }
     }
 
@@ -113,6 +114,7 @@ export function useNode() {
         })
       } catch {
         error(t('server.error'))
+        return
       }
     }
 
@@ -129,6 +131,11 @@ export function useNode() {
     type: string,
     content: string,
   ) => {
+    const node = await db.treeNode.get(id)
+    if (node === undefined) {
+      return
+    }
+
     const network = await getStatus()
     if (network.connected && storeUrl.value) {
       try {
@@ -142,16 +149,11 @@ export function useNode() {
         })
       } catch {
         error(t('server.error'))
+        throw new Error(t('server.error'))
       }
-    }
-  
-    const node = await db.treeNode.get(id)
-    if (node === undefined) {
-      return
     }
 
     await db.treeNode.delete(id)
-
     if (node.type === 'directory') {
       await db.treeNode
         .where('path')
