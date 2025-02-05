@@ -1,1 +1,0 @@
-import{ar as s,ap as a,r,as as n}from"./index-DUrGJN2_.js";const N=s("node",()=>{const e=a.getItem("activeNode"),t=r(e!==null&&!isNaN(parseInt(e))?parseInt(e,10):0);return{activeNode:t,setActiveNode:o=>{a.setItem("activeNode",o),t.value=o},getActiveNode:async()=>await n.treeNode.get(t.value)||null}});export{N as u};

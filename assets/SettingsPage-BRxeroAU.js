@@ -1,0 +1,1 @@
+import{Q as e}from"./QPage-D0poVVKe.js";import{_ as a}from"./SettingsView.vue_vue_type_script_setup_true_lang-BpP68Gr7.js";import{O as t,T as o,a2 as r,W as s,V as n}from"./index-EkAxMetF.js";import"./github-markdown-BQ9O_dh8.js";const u=t({__name:"SettingsPage",setup(_){return(m,c)=>(o(),r(e,null,{default:s(()=>[n(a)]),_:1}))}});export{u as default};
