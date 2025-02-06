@@ -12,11 +12,15 @@
         class="q-my-md"
       >
         <template v-slot:append>
-          <q-icon v-if="filter === ''" name="search" />
-          <q-icon
+          <Icon
+            v-if="filter === ''"
+            icon="line-md:search"
+            height="20"
+          />
+          <Icon
             v-else
-            name="clear"
-            class="cursor-pointer"
+            icon="line-md:close"
+            height="20"
             @click="filter = ''"
           />
         </template>
@@ -39,16 +43,25 @@
           <template v-slot:header-folder="prop">
             <div class="row no-wrap justify-between full-width">
               <div class="row no-wrap ellipsis line items-center full-width">
-                <q-icon class="q-mr-sm text-blue-8" name="room_service" />
+                <Icon
+                  icon="line-md:folder-filled"
+                  class="q-mr-xs text-blue-8"
+                  height="24"
+                />
                 <div class="full-width">{{ prop.node.label }}</div>
               </div>
               <q-btn
                 flat
                 dense
                 color="primary"
-                icon="edit"
                 @click="editFolder(prop.node)"
-              />
+              >
+                <Icon
+                  icon="line-md:edit-full-twotone"
+                  class="q-mr-xs text-blue-8"
+                  height="20"
+                />
+              </q-btn>
             </div>
           </template>
           <template v-slot:header-file="prop">
@@ -57,10 +70,10 @@
                 class="row no-wrap ellipsis items-center full-width"
                 @click="chooseFile(prop.node)"
               >
-                <q-icon
-                  size="20px"
+                <Icon
+                  icon="line-md:file-document"
                   class="q-mr-xs text-blue-8"
-                  name="restaurant_menu"
+                  height="20"
                 />
                 <div class="flex-1">{{ prop.node.label.split('.')[0] }}</div>
               </div>
@@ -68,9 +81,14 @@
                 flat
                 dense
                 color="primary"
-                icon="edit"
                 @click="editFile(prop.node)"
-              />
+              >
+                <Icon
+                  icon="line-md:edit-full-twotone"
+                  class="q-mr-xs text-blue-8"
+                  height="20"
+                />
+              </q-btn>
             </div>
           </template>
         </q-tree>
@@ -97,6 +115,7 @@ import { useQuasar } from 'quasar'
 import { useNavigation } from 'src/composables/useNavigation'
 import { type TreeNode } from 'src/db'
 import { SessionStorage } from 'quasar'
+import { Icon } from '@iconify/vue'
 
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
