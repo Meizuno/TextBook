@@ -100,7 +100,7 @@ export function useNode() {
       return id
     }
 
-    if (await isExists(label, path, type)) {
+    if (await isExists(label, path, type) && node.path !== path) {
       error(t('notify.fileExists'))
       return
     }
@@ -199,6 +199,8 @@ export function useNode() {
           (selectedNode === null || node.id !== selectedNode.id),
       )
       .toArray()
+
+    nodes.sort((a, b) => a.label.localeCompare(b.label))
     return nodes.map((node) => node.label)
   }
 
