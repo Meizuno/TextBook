@@ -27,6 +27,9 @@ export const useTreeStore = defineStore('tree', () => {
 
     // Sort nodes
     nodes.sort((a, b) => {
+      if (a.type === 'directory' && b.type === 'file') return -1;
+      if (a.type === 'file' && b.type === 'directory') return 1;
+
       if (a.label < b.label) return -1
       if (a.label > b.label) return 1
 

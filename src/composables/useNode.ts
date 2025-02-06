@@ -41,9 +41,9 @@ export function useNode() {
     const network = await getStatus()
     if (network.connected && storeUrl.value) {
       try {
-        await api.post('/', node)
+        await api.post('/item', node)
       } catch {
-        error(t('notify.error'))
+        error(t('server.error'))
         return
       }
     }
