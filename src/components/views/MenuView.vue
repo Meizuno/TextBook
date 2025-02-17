@@ -12,17 +12,8 @@
         class="q-my-md"
       >
         <template v-slot:append>
-          <Icon
-            v-if="filter === ''"
-            icon="line-md:search"
-            height="20"
-          />
-          <Icon
-            v-else
-            icon="line-md:close"
-            height="20"
-            @click="filter = ''"
-          />
+          <Icon v-if="filter === ''" icon="line-md:search" height="20" />
+          <Icon v-else icon="line-md:close" height="20" @click="filter = ''" />
         </template>
       </q-input>
       <q-intersection
@@ -41,20 +32,22 @@
           v-model:expanded="expandedTree.value"
         >
           <template v-slot:header-folder="prop">
-            <div class="row no-wrap justify-between full-width">
-              <div class="row no-wrap ellipsis line items-center full-width">
+            <div class="row no-wrap justify-between items-center full-width">
+              <div class="row no-wrap items-center full-width min-w-0">
                 <Icon
                   icon="line-md:folder-filled"
-                  class="q-mr-xs text-blue-8"
+                  class="q-mr-xs text-blue-8 flex-shrink-0"
                   height="24"
                 />
-                <div class="full-width">{{ prop.node.label }}</div>
+                <div class="truncate full-width">{{ prop.node.label }}</div>
               </div>
+
               <q-btn
                 flat
                 dense
                 color="primary"
                 @click="editFolder(prop.node)"
+                class="flex-shrink-0"
               >
                 <Icon
                   icon="line-md:edit-full-twotone"
@@ -64,25 +57,23 @@
               </q-btn>
             </div>
           </template>
+
           <template v-slot:header-file="prop">
             <div class="row no-wrap justify-between gap-2 full-width">
               <div
-                class="row no-wrap ellipsis items-center full-width"
+                class="row no-wrap items-center full-width min-w-0"
                 @click="chooseFile(prop.node)"
               >
                 <Icon
                   icon="line-md:file-document"
-                  class="q-mr-xs text-blue-8"
+                  class="q-mr-xs text-blue-8 flex-shrink-0"
                   height="20"
                 />
-                <div class="flex-1">{{ prop.node.label.split('.')[0] }}</div>
+                <div class="truncate full-width">
+                  {{ prop.node.label.split('.')[0] }}
+                </div>
               </div>
-              <q-btn
-                flat
-                dense
-                color="primary"
-                @click="editFile(prop.node)"
-              >
+              <q-btn flat dense color="primary" @click="editFile(prop.node)">
                 <Icon
                   icon="line-md:edit-full-twotone"
                   class="q-mr-xs text-blue-8"
