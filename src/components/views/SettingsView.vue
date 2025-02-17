@@ -65,7 +65,7 @@
       >
         <div class="flex justify-between px-1">
           <div>{{ t('settings.version') }}</div>
-          <div>2.3</div>
+          <div>2.4</div>
         </div>
         <div
           class="h-0.5"
