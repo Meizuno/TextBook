@@ -7,9 +7,9 @@
       v-html="marked(activeNode.content)"
     ></div>
     <div v-else>
-      <pre class="whitespace-pre-wrap break-words font-sans text-xl">
-        {{ activeNode?.content }}
-      </pre>
+      <pre class="whitespace-pre-wrap break-words font-sans text-xl">{{
+        activeNode?.content
+      }}</pre>
     </div>
   </div>
   <div
