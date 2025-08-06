@@ -1,0 +1,40 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
+  "productName": "TextBook",
+  "version": "3.0.0",
+  "identifier": "com.yuriimyronov.textbook",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://192.168.0.125:3000",
+    "beforeDevCommand": "yarn dev",
+    "beforeBuildCommand": "yarn generate"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "TextBook",
+        "width": 1080,
+        "height": 720,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "iOS": {
+      "bundleVersion": "6"
+    }
+  }
+}

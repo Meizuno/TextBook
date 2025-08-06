@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">Text Book</string>
-    <string name="title_activity_main">Text Book</string>
-    <string name="package_name">com.yuriimyronov.textbook</string>
-    <string name="custom_url_scheme">com.yuriimyronov.textbook</string>
-</resources>

@@ -1,55 +1,29 @@
 {
-  "name": "textbook",
-  "version": "2.2",
-  "description": "A Quasar Project",
-  "productName": "Text Book",
-  "author": "Yurii Myronov <yuramiron16@gmail.com>",
-  "type": "module",
+  "name": "text-book",
+  "version": "3.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "lint": "eslint -c ./eslint.config.js \"./src*/**/*.{ts,js,cjs,mjs,vue}\"",
-    "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\"",
-    "test": "echo \"No test specified\" && exit 0",
-    "dev": "quasar dev",
-    "build": "quasar build",
-    "postinstall": "quasar prepare"
+    "build": "nuxt build",
+    "dev": "nuxt dev --host",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@capacitor/core": "^6.0.0",
-    "@capacitor/network": "^6.0.3",
-    "@quasar/extras": "^1.16.4",
-    "@tailwindcss/typography": "^0.5.16",
-    "axios": "^1.2.1",
+    "@nuxt/eslint": "1.5.2",
+    "@nuxt/ui": "3.2.0",
+    "@nuxtjs/mdc": "0.17.2",
     "dexie": "^4.0.11",
-    "github-markdown-css": "^5.8.1",
-    "marked": "^15.0.6",
-    "pinia": "^2.0.11",
-    "postcss": "^8.5.1",
-    "quasar": "^2.16.0",
-    "tailwindcss": "^3.4.17",
-    "vue": "^3.4.18",
-    "vue-i18n": "^11.0.1",
-    "vue-router": "^4.0.12"
+    "eslint": "^9.0.0",
+    "nuxt": "^4.0.0",
+    "typescript": "^5.6.3",
+    "vue": "^3.5.17",
+    "vue-router": "^4.5.1"
   },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
   "devDependencies": {
-    "@eslint/js": "^9.14.0",
-    "@iconify/vue": "^4.3.0",
-    "@quasar/app-vite": "^2.0.0",
-    "@types/node": "^20.5.9",
-    "@vue/eslint-config-prettier": "^10.1.0",
-    "@vue/eslint-config-typescript": "^14.1.3",
-    "autoprefixer": "^10.4.20",
-    "eslint": "^9.14.0",
-    "eslint-plugin-vue": "^9.30.0",
-    "globals": "^15.12.0",
-    "prettier": "^3.3.3",
-    "typescript": "~5.5.3",
-    "vite-plugin-checker": "^0.8.0",
-    "vue-tsc": "^2.0.29"
-  },
-  "engines": {
-    "node": "^28 || ^26 || ^24 || ^22 || ^20 || ^18",
-    "npm": ">= 6.13.4",
-    "yarn": ">= 1.21.1"
+    "@tailwindcss/typography": "^0.5.16",
+    "@tauri-apps/cli": "^2.6.2"
   }
 }
