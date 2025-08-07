@@ -1,7 +1,7 @@
 <template>
   <UApp
     :toaster="{
-      position: 'bottom-right',
+      position: 'top-right',
       duration: 1500,
       progress: false,
     }"

@@ -24,6 +24,9 @@
   }
 }
 
+.prose {
+  max-width: 100%;
+}
 
 .prose p {
   text-align: justify;

@@ -1,5 +1,7 @@
 <template>
-  <iframe class="w-full" :src="src" />
+  <div class="relative pb-[56.25%] w-full h-0 overflow-hidden">
+    <iframe class="absolute top-0 left-0 w-full h-full" :src="src" />
+  </div>
 </template>
 
 <script setup lang="ts">

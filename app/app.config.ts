@@ -101,5 +101,10 @@ export default defineAppConfig({
         },
       },
     },
+    toast: {
+      slots: {
+        root: "mt-16"
+      }
+    },
   },
 });
