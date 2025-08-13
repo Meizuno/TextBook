@@ -9,7 +9,7 @@
       v-model="model.name"
       placeholder="Title"
       variant="ghost"
-      :ui="{ base: 'placeholder:text-3xl text-3xl font-bold capitalize' }"
+      :ui="{ base: 'placeholder:text-3xl text-3xl font-bold' }"
     />
     <UInput
       v-model="model.path"

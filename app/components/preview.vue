@@ -1,6 +1,6 @@
 <template>
   <div id="content" class="flex flex-col">
-    <h1 class="text-3xl font-bold capitalize">{{ title }}</h1>
+    <h1 class="text-3xl font-bold">{{ title }}</h1>
     <UBreadcrumb :items="path">
       <template #separator>
         <span class="mx-2 text-toned">/</span>
