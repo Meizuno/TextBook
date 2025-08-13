@@ -21,22 +21,20 @@
 <script setup lang="ts">
 const open = defineModel<boolean>("open", { default: false });
 
-const toast = useToast();
+const { setLoading } = useAppState();
 const storage = localStorage.getItem("storage") || "local";
 const { deleteFile } = useGitHub();
 const { createTree } = useTree();
 const { activeFile } = useFile();
 
 const confirm = async () => {
+  setLoading(true);
   if (storage === "github") {
     await deleteFile(activeFile.value!);
   }
   await db.treeNode.delete(activeFile.value!.id);
-  toast.add({
-    title: "File deleted",
-  });
-
   await createTree();
+  setLoading(false);
   navigateTo("/");
   open.value = false;
 };

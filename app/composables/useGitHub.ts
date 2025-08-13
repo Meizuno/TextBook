@@ -13,7 +13,7 @@ export const useGitHub = () => {
   const repo = computed(() => localStorage.getItem("githubRepo") || "");
   const apiToken = computed(() => localStorage.getItem("githubApiToken") || "");
 
-  const toast = useToast();
+  const { setError } = useAppState();
   const getItems = async (path: string): Promise<GitHubResponse[]> => {
     try {
       const response = await fetch(
@@ -27,11 +27,7 @@ export const useGitHub = () => {
       const data = await response.json();
       return data;
     } catch (error) {
-      toast.add({
-        description: error as string,
-        color: "error",
-      });
-
+      setError(error as string);
       throw error;
     }
   };
@@ -49,11 +45,7 @@ export const useGitHub = () => {
       const data = await response.json();
       return data;
     } catch (error) {
-      toast.add({
-        description: error as string,
-        color: "error",
-      });
-
+      setError(error as string);
       throw error;
     }
   };
@@ -84,11 +76,7 @@ export const useGitHub = () => {
         encoding: "base64",
       };
     } catch (error) {
-      toast.add({
-        description: error as string,
-        color: "error",
-      });
-
+      setError(error as string);
       throw error;
     }
   };
@@ -111,11 +99,7 @@ export const useGitHub = () => {
         }
       );
     } catch (error) {
-      toast.add({
-        description: error as string,
-        color: "error",
-      });
-
+      setError(error as string);
       throw error;
     }
   };

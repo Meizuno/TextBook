@@ -54,12 +54,13 @@ if (!activeFile.value) {
   navigateTo("/");
 }
 
-const toast = useToast();
 const storage = localStorage.getItem("storage") || "local";
 const { createFile, deleteFile } = useGitHub();
 const { createTree } = useTree();
+const { setLoading } = useAppState();
 
 const onSubmit = async (data: TreeNode) => {
+  setLoading(true);
   let sha = "";
   if (storage === "github") {
     await deleteFile(activeFile.value!);
@@ -74,12 +75,8 @@ const onSubmit = async (data: TreeNode) => {
     content: data.content,
     encoding: data.encoding,
   });
-
-  toast.add({
-    title: "File updated",
-  });
-
   await createTree();
+  setLoading(false);
   navigateTo("/");
 };
 </script>

@@ -8,6 +8,7 @@
   >
     <NuxtLayout>
       <NuxtPage />
+      <ModalLoad />
     </NuxtLayout>
   </UApp>
 </template>

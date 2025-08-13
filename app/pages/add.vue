@@ -6,12 +6,13 @@
 const { resetActiveFile } = useFile();
 resetActiveFile();
 
-const toast = useToast();
 const storage = localStorage.getItem("storage") || "local";
 const { createFile } = useGitHub();
 const { createTree } = useTree();
+const { setLoading } = useAppState();
 
 const onSubmit = async (data: TreeNode) => {
+  setLoading(true);
   let file = {
     sha: "",
     name: data.name,
@@ -29,12 +30,8 @@ const onSubmit = async (data: TreeNode) => {
     content: file.content,
     encoding: file.encoding,
   });
-
-  toast.add({
-    title: "File added",
-  });
-
   await createTree();
+  setLoading(false);
   navigateTo("/");
 };
 </script>

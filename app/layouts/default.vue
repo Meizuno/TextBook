@@ -52,18 +52,17 @@ import type { NavigationMenuItem } from "@nuxt/ui";
 
 const storage = localStorage.getItem("storage") || "local";
 const { createTree } = useTree();
+const { setLoading } = useAppState();
 
-const toast = useToast();
 const refresh = async () => {
+  setLoading(true);
   if (storage === "github") {
     const { saveAllItems } = useGitHub();
     await saveAllItems();
   }
 
-  toast.add({
-    title: "Successfully refreshed",
-  });
   await createTree();
+  setLoading(false);
 };
 
 const items = ref<NavigationMenuItem[]>([
