@@ -16,11 +16,6 @@ export default defineAppConfig({
       slots: {
         root: "w-full",
       },
-      variants: {
-        variant: {
-          ghost: "p-0",
-        },
-      },
     },
     textarea: {
       slots: {
@@ -30,7 +25,7 @@ export default defineAppConfig({
       variants: {
         size: {
           md: {
-            base: "p-0 text-sm",
+            base: "text-sm",
           },
         },
       },

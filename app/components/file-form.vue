@@ -9,7 +9,7 @@
       v-model="model.name"
       placeholder="Title"
       variant="ghost"
-      :ui="{ base: 'placeholder:text-3xl text-3xl font-bold' }"
+      :ui="{ base: 'placeholder:text-3xl text-3xl font-bold mr-14' }"
     />
     <UInput
       v-model="model.path"
@@ -73,7 +73,7 @@ const model = computed(() => {
       activeFile.value?.path?.substring(
         0,
         activeFile.value.path.lastIndexOf("/") + 1
-      ) || "",
+      ).slice(0, -1) || "",
     content: content,
   };
 });
@@ -91,7 +91,7 @@ const onSubmit = async () => {
 };
 
 const fullPath = () => {
-  const sanitizedName = model.value.name.startsWith("/")
+  const sanitizedName = model.value.name.trim().startsWith("/")
     ? model.value.name.slice(1)
     : model.value.name;
 
@@ -99,7 +99,7 @@ const fullPath = () => {
     return `${sanitizedName}.md`;
   }
 
-  const sanitizedPath = model.value.path.endsWith("/")
+  const sanitizedPath = model.value.path.trim().endsWith("/")
     ? model.value.path.slice(0, -1)
     : model.value.path;
 
